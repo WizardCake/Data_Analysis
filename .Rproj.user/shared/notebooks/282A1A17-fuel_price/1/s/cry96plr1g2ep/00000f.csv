@@ -1,0 +1,62 @@
+"0","# Produzindo o gráfico com uma versão interativa com plotly"
+"0","ggplotly("
+"0","  ggplot(df) +"
+"0","    # Gráfico de Linha"
+"0","    geom_line("
+"0","      aes(x = Data,"
+"0","          y = Preco,"
+"0","          color = Tipo,"
+"0","          group = Produto,"
+"0","          linetype = Tipo),"
+"0","      linewidth = 1.45 ) +"
+"0","    labs(title = ""Preços dos Combustíveis Médio e Ajustados pela Inflação"","
+"0","         subtitle = 'Mai 2004 a Mar 2024',"
+"0","         x = element_blank(),"
+"0","         y = element_blank(),"
+"0","         color = ""Combustível"","
+"0","         linetype = ""Combustível"","
+"0","         alpha = ""Combustível"","
+"0","         caption = 'Fonte: Base dos Dados / ANP / IBGE') + "
+"0","    # Ajustar o eixo x do gráfico para que fique mais visível"
+"0","    scale_x_date(date_breaks = '2.5 year', date_labels = '%y/%b') +"
+"0","    # Ajustar o eixo y para unidade real"
+"0","    scale_y_continuous(labels = scales::dollar_format(prefix = ""R$"")) +"
+"0","    # Criar subplot por tipo de combustível"
+"0","    facet_wrap(~ Produto, scales = 'free', ncol = 2) +"
+"0","    # Ajustes no tema"
+"0","    theme_minimal() +"
+"0","    theme(# Ajuste da legenda"
+"0","      legend.position = 'top',"
+"0","      # Ajuste dos eixos"
+"0","      axis.title = element_text(size = 14),"
+"0","      axis.text = element_text(size = 10),"
+"0","      axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 1))) %>%"
+"0","  layout("
+"0","    title = list(text = paste0("
+"0","      '<b>Preços dos Combustíveis Médio e Ajustados pela Inflação</b><br>',"
+"0","      '<span style=""font-size:14px;"">Mai 2004 a Mar 2024</span>' ),"
+"0","      x = 0.5,              "
+"0","      xanchor = ""center"",   "
+"0","      y = 0.99,             "
+"0","      yanchor = ""top""),"
+"0","    legend = list(orientation = ""h"","
+"0","                  x = 0.5,          "
+"0","                  y = 1.035,        "
+"0","                  xanchor = ""center"","
+"0","                  yanchor = ""top""),"
+"0","    margin = list(t = 100))"
+"1","[1m[33mError[39m in `combine_vars()`:[22m
+[38;5;252m[33m![38;5;252m At least one layer must contain all faceting variables: `Produto`
+[31m✖[38;5;252m Plot is missing `Produto`
+[31m✖[38;5;252m Layer 1 is missing `Produto`[39m
+Backtrace:
+[90m  1. [39m... %>% ...
+[90m  4. [39m[1mplotly[22m:::ggplotly.ggplot(...)
+[90m  5. [39mplotly::gg2list(...)
+[90m  6. [39mplotly (local) ggplotly_build(p)
+[90m  7. [39mlayout$setup(data, plot$data, plot$plot_env)
+[90m  8. [39mggplot2 (local) setup(..., self = self)
+[90m  9. [39mself$facet$compute_layout(data, self$facet_params)
+[90m 10. [39mggplot2 (local) compute_layout(..., self = self)
+[90m 11. [39m[1m[94mggplot2::combine_vars([39m[22mdata, params$plot_env, vars, drop = params$drop[1m[94m)[39m[22m
+"

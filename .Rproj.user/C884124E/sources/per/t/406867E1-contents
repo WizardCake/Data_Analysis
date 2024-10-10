@@ -1,0 +1,193 @@
+---
+title: "Análise do Preço dos Combustíveis Ajustados pela Inflação (Mai 2014 a Mar 2024)"
+author: "Santos, M A"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: false
+    toc_depth: 2
+    theme: cosmo
+    highlight: tango
+---
+
+<style>
+h1{
+  font-weight: bold;
+}
+p {
+  text-align: justify;
+  text-indent: 2em; /* Ajuste o valor de 2em para o recuo desejado */
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introdução
+
+Este documento tem como objetivo analisar os preços dos combustíveis no Brasil durante o período de Mai 2014 a Mar 2024. A análise inclui uma correção inflacionária para entender como o Índice de Preços ao Consumidor Amplo (IPCA) afeta o preço final. Para isso, utilizamos dados da ANP e do IBGE disponíveis na plataforma Base dos Dados.
+
+Os dados que analisaremos incluem:
+
+* Preço Médio: o preço médio de venda dos combustíveis.
+
+* Preço Corrigido pela Inflação: o preço ajustado com base no índice IPCA.
+
+```{r message = FALSE}
+# Load the required libraries
+library(basedosdados)
+library(tidyverse)
+library(kableExtra)
+library(ggplot2)
+library(plotly)
+
+```
+
+# Configuração do Projeto e Consulta de Dados
+
+Neste passo, estabelecemos uma conexão com a API da Base dos Dados, configuramos o projeto de faturamento e realizamos a consulta dos dados relevantes.
+
+```{r eval = FALSE}
+# Definir o ID de faturamento do projeto no Google Cloud
+basedosdados::set_billing_id('magia-dos-bolinhos')
+
+# SQL Query para extrair dados do preço dos combustíveis e corrigir pela inflação
+df <- basedosdados::read_sql(
+"WITH sub AS (
+    SELECT p.produto, 
+           ip.indice AS indice_atual
+    FROM basedosdados.br_anp_precos_combustiveis.microdados p
+    LEFT JOIN basedosdados.br_ibge_ipca.mes_brasil ip 
+        ON p.ano = ip.ano AND EXTRACT(MONTH FROM p.data_coleta) = ip.mes 
+    WHERE p.ano >= 2014
+    GROUP BY 1, 2
+)
+SELECT p.ano, 
+       EXTRACT(MONTH FROM p.data_coleta) AS mes, 
+       p.produto, 
+       ROUND(AVG(p.preco_venda), 3) AS preco_medio,
+       ROUND((AVG(sub.indice_atual) / AVG(ip.indice)) * AVG(p.preco_venda), 3) AS preco_corrigido
+FROM basedosdados.br_anp_precos_combustiveis.microdados p
+LEFT JOIN basedosdados.br_ibge_ipca.mes_brasil ip  
+    ON p.ano = ip.ano AND EXTRACT(MONTH FROM p.data_coleta) = ip.mes 
+INNER JOIN sub 
+    ON p.produto = sub.produto 
+WHERE p.ano >= 2014 AND ip.mes IS NOT NULL
+GROUP BY 1, 2, 3;
+")
+```
+
+```{r include=FALSE}
+df <- readxl::read_excel('inputs\\preco_combustivel.xlsx')
+```
+
+# Limpeza e Preparação dos Dados
+Antes de podermos visualizar os dados, é necessário limpá-los e formatá-los. Isso inclui:
+
+* Remover valores ausentes (NA).
+* Criar uma coluna com a data no formato apropriado para visualização.
+
+```{r}
+# Limpeza dos dados e formatação de data
+df <- df %>% 
+   # Remover valores ausentes
+  dplyr::filter(!is.na(mes)) %>%
+  # Formatando o campo data 
+  dplyr::mutate(date = as.Date(paste(ano, mes, "01", sep = "-"))) %>% 
+  # Selecionando as colunas importantes
+  dplyr::select(date, produto, preco_corrigido, preco_medio) %>% 
+  # Renomeando para padronizar
+  dplyr::rename('Data' = date,
+                'Produto' = produto,
+                'Corrigido' = preco_corrigido,
+                'Medio' = preco_medio) %>% 
+  # Ordenar os dados por ano e mês
+  dplyr::arrange(Produto, Data) %>% 
+  tidyr::pivot_longer(cols = c(Corrigido, Medio),
+                      values_to = 'Preco',
+                      names_to = 'Tipo') %>% 
+  # Retirar o Diesel S50 e Diesel S10
+  dplyr::filter(!(Produto %in% c('Diesel S50', 'Diesel S10')))
+
+df %>%
+  head() %>% 
+  kable() %>%
+  kable_styling("striped", full_width = T)
+
+```
+
+# Visualização dos Preços dos Combustíveis
+Agora, vamos criar um gráfico para visualizar o comportamento do preço corrigido pela inflação de cada tipo de combustível. Utilizamos o ggplot2 para criar um gráfico de linha e, em seguida,para torná-lo interativo, pode-se utilizar o pacote `plotly`.
+
+```{r fig.width=10, fig.height=14}
+# Produzindo o gráfico com uma versão interativa com plotly
+ggplotly(
+  ggplot(df) +
+    # Gráfico de Linha
+    geom_line(
+      aes(x = Data,
+          y = Preco,
+          color = Tipo,
+          group = Produto,
+          linetype = Tipo),
+      linewidth = 1.45 ) +
+    labs(title = "Preços dos Combustíveis Médio e Ajustados pela Inflação",
+         subtitle = 'Mai 2004 a Mar 2024',
+         x = element_blank(),
+         y = element_blank(),
+         color = "Combustível",
+         linetype = "Combustível",
+         alpha = "Combustível",
+         caption = 'Fonte: Base dos Dados / ANP / IBGE') + 
+    # Ajustar o eixo x do gráfico para que fique mais visível
+    scale_x_date(date_breaks = '2.5 year', date_labels = '%y/%b') +
+    # Ajustar o eixo y para unidade real
+    scale_y_continuous(labels = scales::dollar_format(prefix = "R$")) +
+    # Criar subplot por tipo de combustível
+    facet_wrap(~ Produto, scales = 'free', ncol = 2) +
+    # Ajustes no tema
+    theme_minimal() +
+    theme(# Ajuste da legenda
+      legend.position = 'top',
+      # Ajuste dos eixos
+      axis.title = element_text(size = 14),
+      axis.text = element_text(size = 10),
+      axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 1))) %>%
+  layout(
+    title = list(text = paste0(
+      '<b>Preços dos Combustíveis Médio e Ajustados pela Inflação</b><br>',
+      '<span style="font-size:14px;">Mai 2004 a Mar 2024</span>' ),
+      x = 0.5,              
+      xanchor = "center",   
+      y = 0.99,             
+      yanchor = "top"),
+    legend = list(orientation = "h",
+                  x = 0.5,          
+                  y = 1.035,        
+                  xanchor = "center",
+                  yanchor = "top"),
+    margin = list(t = 100))
+
+```
+
+
+# Análise dos Resultados
+
+A análise dos dados revela uma tendência consistente de picos nos preços dos combustíveis em certos períodos (especialmente entre 2021 e 2023), seguida de uma queda nos preços posteriormente. Os preços ajustados pela inflação tendem a ser menores do que os preços nominais nos últimos anos, conforme visto na divergência entre as curvas vermelha e azul após 2022. Isso indica que, embora os preços recentes pareçam altos em termos absolutos, quando considerados com a inflação, eles são mais moderados.
+
+Para o Diesel, observa-se um aumento expressivo de preços no início de 2023, com uma alta acentuada nos preços nominais, que depois diminui, mas permanece elevada em relação aos períodos anteriores. Os preços corrigidos pela inflação são notadamente mais baixos, evidenciando o impacto da inflação na percepção real do custo do diesel.
+
+No caso da Gasolina, há um grande pico de preço no início de 2023, atingindo valores acima de R$7 em termos nominais. Esse pico é seguido por uma queda brusca e, posteriormente, por uma leve redução tanto nos preços corrigidos quanto nos nominais. A estabilidade maior dos preços corrigidos pela inflação ao longo do tempo mostra como a inflação influencia significativamente os preços nominais.
+
+O Etanol segue uma tendência semelhante, com um aumento considerável nos preços por volta de 2022-2023, embora permaneça abaixo da gasolina em termos de preço. Tanto os preços nominais quanto os ajustados pela inflação mostram um aumento constante a partir de 2017, mas a divergência nos últimos anos ressalta o impacto da inflação.
+
+No caso da Gasolina Aditivada, os preços seguem o mesmo padrão da gasolina comum, com aumentos acentuados entre 2022 e 2023. No entanto, os preços ajustados pela inflação indicam que esse combustível historicamente manteve um preço mais elevado em relação aos demais.
+
+O GNV (gás natural veicular) apresenta flutuações menos dramáticas em comparação aos combustíveis líquidos, mas ainda assim houve um aumento perceptível no período de 2022-2023. Os preços ajustados pela inflação mostram uma estabilidade maior ao longo dos anos, com os preços nominais se ajustando gradualmente à inflação.
+
+De forma geral, os preços corrigidos pela inflação (linhas tracejadas azuis) apresentam um aumento mais suave e consistente ao longo do tempo, refletindo a tendência de custo real. Em contrapartida, os preços nominais (linhas sólidas vermelhas) mostram maior volatilidade, com picos acentuados seguidos por correções.
+
+# Conclusão
+Neste documento, os dados indicam que os preços dos combustíveis experimentaram aumentos acentuados, especialmente entre 2021 e 2023, mas o impacto real desses aumentos é moderado quando ajustado pela inflação. A divergência entre os preços nominais e ajustados pela inflação destaca como a inflação distorce a percepção dos aumentos de custo, fazendo com que os preços nominais pareçam mais extremos do que realmente são em termos reais. Isso sugere que fatores externos (provavelmente preços internacionais do petróleo, inflação e questões de cadeia de suprimentos) influenciaram fortemente os custos dos combustíveis nos últimos anos, causando os picos observados em todos os tipos de combustível.

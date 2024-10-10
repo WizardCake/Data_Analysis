@@ -1,0 +1,59 @@
+"0","df <- basedosdados::read_sql(
+""WITH sub AS (
+    SELECT p.produto, 
+           ip.indice AS indice_atual
+    FROM basedosdados.br_anp_precos_combustiveis.microdados p
+    LEFT JOIN basedosdados.br_ibge_ipca.mes_brasil ip 
+        ON p.ano = ip.ano AND EXTRACT(MONTH FROM p.data_coleta) = ip.mes 
+    WHERE p.ano >= 2014
+    GROUP BY 1, 2
+)
+SELECT p.ano, 
+       EXTRACT(MONTH FROM p.data_coleta) AS mes, 
+       p.produto, 
+       ROUND(AVG(p.preco_venda), 3) AS preco_medio,
+       ROUND((AVG(sub.indice_atual) / AVG(ip.indice)) * AVG(p.preco_venda), 3) AS preco_corrigido
+FROM basedosdados.br_anp_precos_combustiveis.microdados p
+LEFT JOIN basedosdados.br_ibge_ipca.mes_brasil ip  
+    ON p.ano = ip.ano AND EXTRACT(MONTH FROM p.data_coleta) = ip.mes 
+INNER JOIN sub 
+    ON p.produto = sub.produto 
+WHERE p.ano >= 2014 AND ip.mes IS NOT NULL
+GROUP BY 1, 2, 3;
+"")
+"
+"2","[38;5;252mThe [34mbigrquery[38;5;252m package is requesting access to your Google account.
+Enter '1' to start a new auth process or select a pre-authorized account.
+[1m1[22m: Send me to the browser for a new auth process.
+[1m2[22m: andrade.matheus7283@gmail.com
+[1m3[22m: mathandre26@gmail.com
+[1m4[22m: matheusseccrj@gmail.com[39m"
+"0","3"
+"2","Auto-refreshing stale OAuth token.
+"
+"2","Running job magia-dos-bolinhos.job_GO520_O0IXgFehdtgQCf8l0T5vKO.US ⠙ 2s"
+"2","Running job magia-dos-bolinhos.job_GO520_O0IXgFehdtgQCf8l0T5vKO.US ⠹ 2.6s"
+"2","Running job magia-dos-bolinhos.job_GO520_O0IXgFehdtgQCf8l0T5vKO.US ⠸ 2.9s"
+"2","Running job magia-dos-bolinhos.job_GO520_O0IXgFehdtgQCf8l0T5vKO.US ⠼ 3.5s"
+"2","Running job magia-dos-bolinhos.job_GO520_O0IXgFehdtgQCf8l0T5vKO.US ⠴ 3.8s"
+"2","Running job magia-dos-bolinhos.job_GO520_O0IXgFehdtgQCf8l0T5vKO.US ⠦ 4.3s"
+"2","Running job magia-dos-bolinhos.job_GO520_O0IXgFehdtgQCf8l0T5vKO.US ⠧ 4.6s"
+"2","Running job magia-dos-bolinhos.job_GO520_O0IXgFehdtgQCf8l0T5vKO.US ⠇ 5.2s"
+"2","Running job magia-dos-bolinhos.job_GO520_O0IXgFehdtgQCf8l0T5vKO.US ⠏ 5.5s"
+"2","Running job magia-dos-bolinhos.job_GO520_O0IXgFehdtgQCf8l0T5vKO.US ⠋ 6s  "
+"2","Running job magia-dos-bolinhos.job_GO520_O0IXgFehdtgQCf8l0T5vKO.US ⠙ 6.4s"
+"2","Running job magia-dos-bolinhos.job_GO520_O0IXgFehdtgQCf8l0T5vKO.US ⠹ 6.9s"
+"2","Running job magia-dos-bolinhos.job_GO520_O0IXgFehdtgQCf8l0T5vKO.US ⠸ 7.2s"
+"2","Running job magia-dos-bolinhos.job_GO520_O0IXgFehdtgQCf8l0T5vKO.US ⠼ 7.8s"
+"2","Running job magia-dos-bolinhos.job_GO520_O0IXgFehdtgQCf8l0T5vKO.US ⠴ 8.1s"
+"2","Running job magia-dos-bolinhos.job_GO520_O0IXgFehdtgQCf8l0T5vKO.US ⠦ 8.6s"
+"2","Running job magia-dos-bolinhos.job_GO520_O0IXgFehdtgQCf8l0T5vKO.US ⠧ 8.9s"
+"2","Running job magia-dos-bolinhos.job_GO520_O0IXgFehdtgQCf8l0T5vKO.US ⠇ 9.5s"
+"2","Running job magia-dos-bolinhos.job_GO520_O0IXgFehdtgQCf8l0T5vKO.US ⠏ 9.8s"
+"2","Running job magia-dos-bolinhos.job_GO520_O0IXgFehdtgQCf8l0T5vKO.US ⠏ 9.8s"
+"2","
+"
+"2","[38;5;252mJob complete[39m"
+"2","[38;5;252mBilled:[39m"
+"2","[38;5;252mDownloading first chunk of data.[39m"
+"2","[38;5;252mFirst chunk includes all requested rows.[39m"

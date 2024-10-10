@@ -1,0 +1,25 @@
+"0","# Limpeza dos dados e formatação de data"
+"0","df <- df %>% "
+"0","   # Remover valores ausentes"
+"0","  dplyr::filter(!is.na(mes)) %>%"
+"0","  # Formatando o campo data "
+"0","  dplyr::mutate(date = as.Date(paste(ano, mes, ""01"", sep = ""-""))) %>% "
+"0","  # Selecionando as colunas importantes"
+"0","  dplyr::select(date, produto, preco_corrigido, preco_medio) %>% "
+"0","  # Renomeando para padronizar"
+"0","  dplyr::rename('Data' = date,"
+"0","                'Produto' = produto,"
+"0","                'Corrigido' = preco_corrigido,"
+"0","                'Medio' = preco_medio)"
+"1","[1m[33mError[39m in `dplyr::filter()`:[22m
+[38;5;252m[36mi[38;5;252m In argument: `!is.na(mes)`.[39m
+[1mCaused by error:[22m
+[33m![39m object 'mes' not found
+Backtrace:
+[90m  1. [39m... %>% ...
+[90m  6. [39m[1m[94mdplyr:::filter.data.frame([39m[22m., !is.na(mes)[1m[94m)[39m[22m
+[90m  7. [39mdplyr:::filter_rows(.data, dots, by)
+[90m  8. [39mdplyr:::filter_eval(...)
+[90m 10. [39mmask$eval_all_filter(dots, env_filter)
+[90m 11. [39m[1mdplyr[22m (local) eval()
+"
