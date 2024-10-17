@@ -1,0 +1,357 @@
+---
+title: "Análise da Geração, Consumo e Consumidores de Energia Elétrica no Brasil"
+author: "Santos, M. A"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    encoding: UTF-8
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+# Introdução
+
+A energia elétrica é um pilar essencial para o desenvolvimento econômico e social de qualquer país e, no Brasil, não é diferente. Em um país de dimensões continentais, com uma população de mais de 212 milhões de pessoas e uma economia em constante transformação, o consumo de energia elétrica revela muito sobre as dinâmicas regionais e socioeconômicas. O objetivo deste relatório é analisar os padrões de consumo de energia elétrica no Brasil, destacando as variações e as tendências ao longo do tempo da matriz energética nacional.
+
+Esse estudo abrange os dados recentes de geração e consumo de energia e consumidores conectados à rede elétrica, com um foco especial nas macrorregiões e nas categorias que mais consomem. Também abordaremos os impactos de políticas de eficiência energética e o papel crescente das energias renováveis, como a solar e a eólica.
+
+### Objetivo
+O objetivo principal é compreender como o consumo de energia no Brasil está distribuído, quais fatores impulsionam esse consumo, e como o país pode enfrentar os desafios de uma demanda crescente, mantendo ao mesmo tempo a sustentabilidade ambiental e a segurança energética. Portanto, este relatório apresenta uma análise detalhada do consumo de energia elétrica no Brasil, baseada em dados históricos e setoriais. Utilizaremos gráficos e pramagação em R para ilustrar as principais tendências e comparações entre regiões e setores.
+
+### Pacotes Utilizados
+
+```{r}
+library(tidyverse)
+library(fpp3)
+library(httr)
+library(readxl)
+library(tsibble)
+library(patchwork)
+library(gganimate)
+```
+
+
+### Dados Utilizados
+
+```{r}
+# --- Consumo ---
+
+# Baixar o arquivo temporariamente
+url <- "https://www.epe.gov.br/sites-pt/publicacoes-dados-abertos/dados-abertos/Documents/Dados_abertos_Consumo_Mensal.xlsx"
+temp_file <- base::tempfile(fileext = ".xlsx")
+
+# Download do arquivo
+httr::GET(url, httr::write_disk(temp_file, overwrite = TRUE))
+
+# Ler o arquivo Excel
+consumo <- readxl::read_excel(temp_file, sheet = 2)
+setor <- readxl::read_excel(temp_file, sheet = 3)
+
+# --- Estados ---
+estados <- geobr::read_state()
+```
+
+
+# Padrões de Consumo ao Longo do Tempo
+Nos últimos 20 anos, o consumo de energia elétrica no Brasil tem mostrado uma tendência de crescimento consistente, embora marcada por alguns eventos críticos que geraram flutuações. Entre 2008 e 2009, por exemplo, a crise financeira global reduziu temporariamente o consumo industrial, mas em contrapartida, o setor residencial continuou a crescer, impulsionado pelo aumento da renda das famílias e pela urbanização.
+
+```{r fig.height=6, fig.width=10}
+### Consumo Total ####
+
+consumo %>% 
+  dplyr::summarise(Consumo = sum(Consumo),
+                   .by = DataExcel) %>% 
+  dplyr::mutate(DataExcel = tsibble::yearmonth(DataExcel)) %>%
+  tsibble::as_tsibble(index = DataExcel) %>% 
+  fabletools::model(STL(Consumo)) %>% 
+  fabletools::components() %>%
+  dplyr::mutate(DataExcel = as.Date(DataExcel)) %>% 
+  ggplot() +
+  geom_line(aes(x = DataExcel,
+                y = Consumo,
+                color = 'Original',
+                linetype = 'Original'),
+            linewidth = 1.45,
+            alpha = 0.8) +
+  geom_line(aes(x = DataExcel,
+                y = trend,
+                color = 'Tendência',
+                linetype = 'Tendência'),
+            linewidth = 1.45) +
+  labs(x = element_blank(),
+       y = element_blank(),
+       linetype = 'Série',
+       color = 'Série') +
+  scale_x_date(date_breaks = '2 year',
+               date_labels = '%y') +
+  scale_y_continuous(labels = scales::number_format(suffix = ' TWh',
+                                                    scale = 1/1e6)) +
+  scale_linetype_manual(values = c('longdash', 'solid')) +
+  scale_color_manual(values = c('grey20', 'black')) +
+  theme_minimal() +
+  theme(text = element_text(size = 18),
+        legend.position = 'top')
+```
+
+## Crescimento Pós-Crise (2010 - 2020)
+Após o período de recuperação da crise, o Brasil experimentou uma nova expansão econômica, especialmente em setores como o de serviços e o agronegócio, ambos altamente dependentes de energia elétrica. O gráfico abaixo ilustra a tendência de crescimento no consumo de energia entre 2010 e 2020, destacando os setores que mais impulsionaram esse aumento.
+
+```{r fig.height=8, fig.width=10}
+### Consumo Total ####
+
+consumo %>% 
+  dplyr::summarise(Consumo = sum(Consumo),
+                   .by = c(DataExcel, Classe)) %>% 
+  dplyr::mutate(DataExcel = tsibble::yearmonth(DataExcel)) %>%
+  tsibble::as_tsibble(index = DataExcel, key = Classe) %>% 
+  fabletools::model(STL(Consumo)) %>% 
+  fabletools::components() %>%
+  dplyr::mutate(DataExcel = as.Date(DataExcel)) %>% 
+  ggplot() +
+  geom_line(aes(x = DataExcel,
+                y = Consumo,
+                color = Classe,
+                linetype = 'Original'),
+            linewidth = 1.45,
+            alpha = 0.5) +
+  geom_line(aes(x = DataExcel,
+                y = trend,
+                color = Classe,
+                linetype = 'Tendência'),
+            linewidth = 1.45) +
+  labs(x = element_blank(),
+       y = element_blank(),
+       linetype = 'Série',
+       color = 'Setor') +
+  scale_x_date(date_breaks = '2 year',
+               date_labels = '%y') +
+  scale_y_continuous(labels = scales::number_format(suffix = ' TWh',
+                                                    scale = 1/1e6)) +
+  scale_linetype_manual(values = c('longdash', 'solid')) +
+  facet_wrap(~Classe, scales = 'free', ncol = 2) +
+  theme_minimal() +
+  theme(text = element_text(size = 18),
+        legend.position = 'top')
+```
+
+# Diferenças Regionais no Consumo
+O Brasil é um país com grandes desigualdades regionais, e isso se reflete claramente nos padrões de consumo de energia elétrica. As regiões Sudeste e Sul, impulsionadas por grandes centros industriais como São Paulo e Porto Alegre, representam as áreas de maior consumo energético, enquanto as regiões Norte e Nordeste estão apenas começando a aumentar sua demanda, impulsionadas por novos projetos de infraestrutura e pela expansão de áreas industriais.
+
+```{r fig.height=8, fig.width=10}
+### Consumo Total ####
+
+consumo %>% 
+  dplyr::summarise(Consumo = sum(Consumo),
+                   .by = c(DataExcel, Regiao)) %>% 
+  dplyr::mutate(DataExcel = tsibble::yearmonth(DataExcel)) %>%
+  tsibble::as_tsibble(index = DataExcel, key = Regiao) %>% 
+  fabletools::model(STL(Consumo)) %>% 
+  fabletools::components() %>%
+  dplyr::mutate(DataExcel = as.Date(DataExcel)) %>% 
+  ggplot() +
+  geom_line(aes(x = DataExcel,
+                y = Consumo,
+                color = Regiao,
+                linetype = 'Original'),
+            linewidth = 1.45,
+            alpha = 0.5) +
+  geom_line(aes(x = DataExcel,
+                y = trend,
+                color = Regiao,
+                linetype = 'Tendência'),
+            linewidth = 1.45) +
+  labs(x = element_blank(),
+       y = element_blank(),
+       linetype = 'Série',
+       color = 'Setor') +
+  scale_x_date(date_breaks = '2 year',
+               date_labels = '%y') +
+  scale_y_continuous(labels = scales::number_format(suffix = ' TWh',
+                                                    scale = 1/1e6)) +
+  scale_linetype_manual(values = c('longdash', 'solid')) +
+  facet_wrap(~Regiao, scales = 'free', ncol = 2) +
+  theme_minimal() +
+  theme(text = element_text(size = 18),
+        legend.position = 'top')
+```
+
+### Sudeste: O Gigante Energético
+O Sudeste, sozinho, responde por mais de 40% do consumo total de energia no Brasil. São Paulo, como a maior economia do país, concentra uma grande parte desse consumo, tanto no setor industrial quanto residencial. Com mais de 45 milhões de habitantes, o estado possui uma infraestrutura de energia diversificada, incluindo a presença significativa de usinas hidrelétricas e um crescente investimento em energias renováveis.
+
+```{r fig.height=8, fig.width=10}
+### Consumo Total ####
+
+consumo %>% 
+  dplyr::filter(Regiao == 'Sudeste') %>% 
+  dplyr::summarise(Consumo = sum(Consumo),
+                   .by = c(DataExcel, UF)) %>% 
+  dplyr::mutate(DataExcel = tsibble::yearmonth(DataExcel)) %>%
+  tsibble::as_tsibble(index = DataExcel, key = UF) %>% 
+  fabletools::model(STL(Consumo)) %>% 
+  fabletools::components() %>%
+  dplyr::mutate(DataExcel = as.Date(DataExcel)) %>% 
+  ggplot() +
+  geom_line(aes(x = DataExcel,
+                y = Consumo,
+                color = UF,
+                linetype = 'Original'),
+            linewidth = 1.45,
+            alpha = 0.5) +
+  geom_line(aes(x = DataExcel,
+                y = trend,
+                color = UF,
+                linetype = 'Tendência'),
+            linewidth = 1.45) +
+  labs(x = element_blank(),
+       y = element_blank(),
+       linetype = 'Série',
+       color = 'Setor') +
+  scale_x_date(date_breaks = '2 year',
+               date_labels = '%y') +
+  scale_y_continuous(labels = scales::number_format(suffix = ' TWh',
+                                                    scale = 1/1e6)) +
+  scale_linetype_manual(values = c('longdash', 'solid')) +
+  facet_wrap(~UF, scales = 'free', ncol = 2) +
+  theme_minimal() +
+  theme(text = element_text(size = 18),
+        legend.position = 'top')
+```
+
+### Crescimento no Norte e Nordeste
+Por outro lado, as regiões Norte e Nordeste estão crescendo em termos de consumo, embora ainda representem uma fração menor do total. O Norte, com sua extensa área florestal e baixa densidade populacional, tem uma infraestrutura de energia menos desenvolvida. No entanto, grandes projetos como a construção de usinas hidrelétricas no Rio Madeira e a expansão da linha de transmissão de Belo Monte estão começando a mudar esse cenário. O Nordeste, com seus avanços em energia eólica e solar, está se tornando um polo emergente de geração de energia renovável.
+
+```{r fig.height=8, fig.width=10}
+### Consumo Total ####
+
+consumo %>% 
+  dplyr::filter(Regiao == 'Nordeste') %>% 
+  dplyr::summarise(Consumo = sum(Consumo),
+                   .by = c(DataExcel, UF)) %>% 
+  dplyr::mutate(DataExcel = tsibble::yearmonth(DataExcel)) %>%
+  tsibble::as_tsibble(index = DataExcel, key = UF) %>% 
+  fabletools::model(STL(Consumo)) %>% 
+  fabletools::components() %>%
+  dplyr::mutate(DataExcel = as.Date(DataExcel)) %>% 
+  ggplot() +
+  geom_line(aes(x = DataExcel,
+                y = Consumo,
+                color = UF,
+                linetype = 'Original'),
+            linewidth = 1.45,
+            alpha = 0.5) +
+  geom_line(aes(x = DataExcel,
+                y = trend,
+                color = UF,
+                linetype = 'Tendência'),
+            linewidth = 1.45) +
+  labs(x = element_blank(),
+       y = element_blank(),
+       linetype = 'Série',
+       color = 'Setor') +
+  scale_x_date(date_breaks = '4 year',
+               date_labels = '%y') +
+  scale_y_continuous(labels = scales::number_format(suffix = ' TWh',
+                                                    scale = 1/1e6)) +
+  scale_linetype_manual(values = c('longdash', 'solid')) +
+  facet_wrap(~UF, scales = 'free', ncol = 3) +
+  theme_minimal() +
+  theme(text = element_text(size = 18),
+        legend.position = 'top')
+```
+
+# Consumo por Setores
+Setor Industrial: O Motor do Consumo
+Historicamente, o setor industrial sempre foi o maior consumidor de energia elétrica no Brasil. Em 2020, ele representou aproximadamente 37% de todo o consumo energético do país. As indústrias de mineração, siderurgia e manufatura são particularmente intensivas em energia, especialmente no estado de Minas Gerais, onde as atividades de extração e processamento de metais são predominantes.
+
+Além disso, o aumento da produção agrícola no Centro-Oeste e a expansão de indústrias ligadas ao agronegócio têm impulsionado o crescimento do consumo de energia nesse setor.
+
+```{r fig.height=10, fig.width=10}
+setor %>% 
+  dplyr::summarise(Consumo = sum(Consumo),
+                   .by = c(DataExcel, SetorIndustrial)) %>% 
+  dplyr::mutate(DataExcel = tsibble::yearmonth(DataExcel)) %>%
+  tsibble::as_tsibble(index = DataExcel, key = SetorIndustrial) %>% 
+  fabletools::model(STL(Consumo)) %>% 
+  fabletools::components() %>%
+  dplyr::mutate(DataExcel = as.Date(DataExcel)) %>% 
+  ggplot() +
+  geom_line(aes(x = DataExcel,
+                y = Consumo,
+                color = SetorIndustrial,
+                linetype = 'Original'),
+            linewidth = 1.45,
+            alpha = 0.5) +
+  geom_line(aes(x = DataExcel,
+                y = trend,
+                color = SetorIndustrial,
+                linetype = 'Tendência'),
+            linewidth = 1.4) +
+  labs(x = element_blank(),
+       y = element_blank(),
+       linetype = 'Série',
+       color = 'Setor') +
+  scale_x_date(date_breaks = '4 year',
+               date_labels = '%y') +
+  scale_y_continuous(labels = scales::number_format(suffix = ' TWh',
+                                                    scale = 1/1e6)) +
+  scale_linetype_manual(values = c('longdash', 'solid')) +
+  scale_color_discrete(guide = 'none') +
+  facet_wrap(~SetorIndustrial, scales = 'free',
+             ncol = 2, labeller = label_wrap_gen(width = 40)) +
+  theme_minimal() +
+  theme(text = element_text(size = 18),
+        strip.text = element_text(size = 10),
+        legend.position = 'top')
+```
+
+
+# Setor Residencial: Crescimento e Urbanização
+O setor residencial tem mostrado um crescimento constante, impulsionado pelo aumento da população urbana e pela maior utilização de aparelhos eletrônicos e eletrodomésticos. O número de consumidores conectados à rede elétrica aumentou significativamente nos últimos 10 anos, com mais de 80% das residências brasileiras equipadas com eletrodomésticos que demandam uma quantidade considerável de eletricidade, como ar-condicionado e eletrodomésticos de cozinha.
+
+
+```{r fig.height=8, fig.width=10}
+p <- consumo %>% 
+  dplyr::summarise(Consumo = sum(Consumo),
+                   .by = c(DataExcel, Classe, UF)) %>%
+  tidyr::pivot_wider(names_from = Classe,
+                     values_from = Consumo) %>% 
+  dplyr::rowwise() %>% 
+  dplyr::mutate(Total = sum(Comercial, Industrial, Outros, Residencial, Rural),
+                Residencial = Residencial/Total) %>%
+  dplyr::ungroup() %>% 
+  dplyr::select(DataExcel, UF, Residencial) %>% 
+  dplyr::right_join(estados,
+                    by = c('UF' = 'abbrev_state')) %>% 
+  ggplot() +
+  aes(x = DataExcel,
+      y = Residencial,
+      group = UF,
+      color = UF,
+      geom = geom) +
+  geom_sf() <- 
+  labs(x = element_blank(),
+       y = element_blank()) +
+  theme_minimal() +
+  transition_reveal(DataExcel)
+
+animate(p, width = 800, height = 600, fps = 10, duration = 10, renderer = gifski_renderer("consumo_residencial.gif"))
+  
+```
+
+# Impactos das Energias Renováveis e Eficiência Energética
+
+## A Transição para Energias Renováveis
+Nos últimos anos, o Brasil tem dado passos significativos rumo a uma matriz energética mais limpa. Com um potencial natural abundante para a geração de energia solar e eólica, o país já é um dos líderes globais nesse setor. Em estados como Bahia e Ceará, a produção de energia eólica já responde por mais de 20% da oferta energética, e os investimentos em energia solar têm se multiplicado.
+
+## Eficiência Energética: Um Desafio Pendente
+Embora haja avanços em termos de geração de energia renovável, ainda existe um longo caminho a ser percorrido no que se refere à eficiência energética. O desperdício de energia nas redes de transmissão e o uso ineficiente em setores industriais e residenciais representam grandes desafios. O governo brasileiro já lançou alguns programas de incentivo à eficiência energética, mas sua implementação enfrenta obstáculos em regiões com menos infraestrutura.
+
+# Projeções Futuras e Desafios
+À medida que o Brasil continua a crescer, a demanda por energia elétrica deve seguir aumentando, especialmente nas regiões Norte e Nordeste, que estão experimentando um boom de infraestrutura. Estima-se que, até 2030, a demanda nacional por eletricidade crescerá cerca de 25%, colocando pressão sobre o sistema energético nacional.
+
+Além disso, a dependência do Brasil em hidrelétricas, que representam mais de 60% da matriz energética, torna o país vulnerável a crises hídricas, como a que ocorreu em 2021. A diversificação da matriz energética, com um foco maior em fontes renováveis e melhorias na eficiência energética, será essencial para garantir a segurança energética no futuro.
+
+# Conclusão
+Este relatório revela que o consumo de energia no Brasil está profundamente ligado às dinâmicas econômicas e regionais do país. Enquanto o Sudeste continua sendo o principal consumidor de eletricidade, regiões como o Norte e Nordeste estão emergindo como novos polos de demanda e geração de energia, especialmente no campo das renováveis. O desafio para o futuro será equilibrar o crescimento da demanda com a necessidade de uma matriz energética sustentável e resiliente. Políticas públicas que incentivem a eficiência energética e a adoção de fontes limpas serão cruciais para o sucesso desse processo.
