@@ -16,7 +16,12 @@ temp_file <- base::tempfile(fileext = ".xlsx")
 httr::GET(url, httr::write_disk(temp_file, overwrite = TRUE))
 
 # Ler o arquivo Excel
-epe <- readxl::read_excel(temp_file)
+consumo <- readxl::read_excel(temp_file, sheet = 2)
+setor <- readxl::read_excel(temp_file, sheet = 3)
+
+
+# --- Estados ---
+estados <- geobr::read_state()
 
 ### Consumo Total ####
 
@@ -55,7 +60,7 @@ epe %>%
         legend.position = 'top')
 
 
-p <- consumo %>% 
+consumo %>% 
   dplyr::summarise(Consumo = sum(Consumo),
                    .by = c(DataExcel, Classe, UF)) %>%
   tidyr::pivot_wider(names_from = Classe,
@@ -69,18 +74,11 @@ p <- consumo %>%
   dplyr::right_join(estados,
                     by = c('UF' = 'abbrev_state')) %>% 
   ggplot() +
-  geom_sf(aes(fill = value, geometry = geom)) +
-  scale_fill_viridis_c(option = "viridis",
-                       name = "Consumo (%)",
-                       breaks = seq(0,0.88, 0.2),
-                       limits = c(0, 0.8)) +
-  labs(title = 'Data: {frame_time} / 2024-07-01',
-       x = element_blank(),
+  geom_line(aes(x = DataExcel, y = value, color = UF)) +
+  labs(x = element_blank(),
        y = element_blank()) +
-  facet_wrap(~name) +
-  theme_void() +
-  transition_time(DataExcel) +
-  ease_aes('linear')
+  facet_grid(name ~ name_region, scales = 'free')
+  theme_minimal()
 
 a <- Sys.time()
 animate(p, 
