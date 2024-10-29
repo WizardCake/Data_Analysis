@@ -1,0 +1,637 @@
+---
+title: "Geração, Consumo e Consumidores de Energia Elétrica no Brasil"
+subtitle: 'Parte 1: O Consumo'
+date: "`r Sys.Date()`"
+bibliography: grateful-refs.bib
+output:
+  prettydoc::html_pretty:
+  theme: architect
+  highlight: github
+
+---
+
+```{css estilo, echo=FALSE}
+
+body {
+
+background-color: #f8f1f5;
+
+}
+
+p {
+
+font-family: 'Roboto', sans-serif;
+
+font-size: 14pt;
+
+text-align: justify;
+
+}
+
+pre code {
+
+font-family: 'Fira Code';
+
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
+
+```
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE,
+
+warning = FALSE,
+
+message = FALSE)
+
+```
+
+# Introdução
+
+A energia elétrica é um pilar essencial para o desenvolvimento econômico e social de qualquer país e, no Brasil, não é diferente. Em um país de dimensões continentais, com uma população de mais de 212 milhões de pessoas e uma economia em constante transformação, o consumo de energia elétrica revela muito sobre as dinâmicas regionais e socioeconômicas. O objetivo deste relatório é analisar os padrões de consumo de energia elétrica no Brasil, destacando as variações e as tendências ao longo do tempo da matriz energética nacional.
+
+Esse estudo abrange os dados recentes de geração e consumo de energia e consumidores conectados à rede elétrica, com um foco especial nas macrorregiões e nas categorias que mais consomem. Também abordaremos os impactos de políticas de eficiência energética e o papel crescente das energias renováveis, como a solar e a eólica.
+
+## Objetivo
+
+O objetivo principal é compreender como o consumo de energia no Brasil está distribuído, quais fatores impulsionam esse consumo, e como o país pode enfrentar os desafios de uma demanda crescente, mantendo ao mesmo tempo a sustentabilidade ambiental e a segurança energética. Portanto, este relatório apresenta uma análise detalhada do consumo de energia elétrica no Brasil, baseada em dados históricos e setoriais. Utilizaremos gráficos e pramagação em R para ilustrar as principais tendências e comparações entre regiões e setores.
+
+## Pacotes Utilizados
+
+```{r pacotes, include=FALSE}
+library(tidyverse)
+library(ggthemes)
+library(fpp3)
+library(httr)
+library(readxl)
+library(tsibble)
+library(patchwork)
+library(gganimate)
+library(grateful)
+```
+
+```{r gratidão, echo=FALSE}
+pkgs <- cite_packages(output = "table", out.dir = ".", include.RStudio = FALSE)
+knitr::kable(pkgs)
+```
+
+## Dados Utilizados
+
+```{r baixar dados, results = "hide"}
+
+# Baixar o arquivo temporariamente
+
+url <- "https://www.epe.gov.br/sites-pt/publicacoes-dados-abertos/dados-abertos/Documents/Dados_abertos_Consumo_Mensal.xlsx"
+
+temp_file <- base::tempfile(fileext = ".xlsx")
+
+# Download do arquivo
+
+httr::GET(url, httr::write_disk(temp_file, overwrite = TRUE))
+
+# Ler o arquivo Excel
+
+consumo <- readxl::read_excel(temp_file, sheet = 2)
+
+setor <- readxl::read_excel(temp_file, sheet = 3)
+
+# --- Estados ---
+
+estados <- geobr::read_state()
+
+```
+
+# Padrões de Consumo ao Longo do Tempo
+
+Nos últimos 20 anos, o consumo de energia elétrica no Brasil tem mostrado uma tendência de crescimento consistente, embora marcada por alguns eventos críticos que geraram flutuações. Essa trajetória de longo prazo reflete o desenvolvimento econômico do país, a expansão populacional e o aumento da urbanização, além de uma maior eletrificação dos setores produtivos e das residências. No entanto, ao longo desse período, crises econômicas e políticas, como a recessão de 2014-2016 e os efeitos da pandemia de COVID-19 em 2020, geraram quedas pontuais no consumo, destacando a sensibilidade do setor energético às condições econômicas e sociais.
+
+```{r grafico total,fig.height=6, fig.width=10}
+
+### Consumo Total ####
+
+consumo %>%
+  dplyr::summarise(Consumo = sum(Consumo),
+                   .by = c(DataExcel)) %>%
+  dplyr::mutate(DataExcel = tsibble::yearmonth(DataExcel)) %>%
+  tsibble::as_tsibble(index = DataExcel) %>%
+  fabletools::model(STL(Consumo)) %>%
+  fabletools::components() %>%
+  dplyr::mutate(DataExcel = as.Date(DataExcel)) %>%
+  ggplot() +
+  geom_line(aes(x = DataExcel,
+                y = Consumo,
+                linetype = 'Original'),
+            linewidth = 1.45,
+            alpha = 0.45) +
+  geom_line(aes(x = DataExcel,
+                y = trend,
+                linetype = 'Tendencia'),
+            linewidth = 1.45) +
+  labs(
+    title = "A Crescente Tendência da Demanda Energética",
+    subtitle = "e as Recessão e Pandemia como seus Freios",
+    x = '',
+    y = '',
+    linetype = 'Serie',
+    color = 'Setor'
+  ) +
+  scale_x_date(date_breaks = '2 year',
+               date_labels = '%y') +
+  scale_y_continuous(labels = scales::number_format(suffix = ' TWh',
+                                                    scale = 1 / 1e6)) +
+  scale_linetype_manual(values = c('longdash', 'solid')) +
+  theme_minimal() +
+  theme(text = element_text(size = 18),
+        legend.position = 'top',
+        legend.text = element_text(size = 16))
+
+```
+
+## Entre o Crescimento e as Crises:
+
+Entre 2004 e 2014, o gráfico mostra um aumento constante no consumo de energia, atingindo um patamar de aproximadamente 40 TWh. Esse período coincide com o crescimento econômico sustentado no Brasil, quando a demanda por eletricidade acompanhou o aumento da produção industrial e o consumo residencial mais intensivo, impulsionado pela maior disponibilidade de crédito, aumento da renda e popularização de equipamentos eletroeletrônicos.
+
+No entanto, a partir de 2015, observa-se uma estagnação e, em alguns casos, uma leve redução no consumo de energia. Isso pode ser diretamente associado à recessão econômica que o país enfrentou, durante a qual a desaceleração industrial e a retração do consumo das famílias impactaram o uso de eletricidade. Este período de desaceleração é claramente representado no gráfico pela quebra da tendência de crescimento.
+
+Já a pandemia de COVID-19, em 2020, provocou uma nova contração na demanda de energia, conforme a atividade econômica foi interrompida, sobretudo nos setores industrial e de serviços. A interrupção temporária das atividades de fábricas, comércios e serviços resultou em uma queda abrupta no consumo de eletricidade. Entretanto, o impacto da pandemia não foi duradouro, como demonstrado pela recuperação rápida observada em 2021, quando o consumo de energia elétrica volta a crescer.
+
+## Os tipos de Consumo
+
+Ao analisar o consumo de energia elétrica no Brasil ao longo dos últimos 20 anos, percebe-se um comportamento distinto entre os diferentes setores econômicos. Cada segmento --- comercial, industrial, residencial, rural e outros --- apresenta dinâmicas próprias, moldadas por fatores econômicos, sociais e estruturais.
+
+```{r grafico classe, fig.height=8, fig.width=10}
+### Consumo por Classe ####
+
+consumo %>%
+  dplyr::summarise(Consumo = sum(Consumo),
+                   .by = c(DataExcel, Classe)) %>%
+  dplyr::mutate(DataExcel = tsibble::yearmonth(DataExcel)) %>%
+  tsibble::as_tsibble(index = DataExcel, key = Classe) %>%
+  fabletools::model(STL(Consumo)) %>%
+  fabletools::components() %>%
+  dplyr::mutate(DataExcel = as.Date(DataExcel),
+                Classe = factor(Classe,
+                                levels = c("Residencial",
+                                           "Industrial",
+                                           "Comercial",
+                                           "Rural",
+                                           "Outros"))) %>%
+  ggplot() +
+  geom_line(aes(x = DataExcel,
+                y = Consumo,
+                color = Classe,
+                linetype = 'Original'),
+            linewidth = 1.45,
+            alpha = 0.45) +
+  geom_line(aes(x = DataExcel,
+                y = trend,
+                color = Classe,
+                linetype = 'Tendencia'),
+            linewidth = 1.45) +
+  labs(
+    title = "As Distintas Dinâmicas das Classes no Brasil",
+       subtitle = "o Crescimento Contra a Volatilidade em duas décadas",
+       x = '',
+       y = '',
+       linetype = 'Serie',
+       color = 'Setor'
+    ) +
+  scale_x_date(date_breaks = '2 year',
+               date_labels = '%y') +
+  scale_y_continuous(labels = scales::number_format(suffix = ' TWh',
+                                                    scale = 1/1e6)) +
+  scale_linetype_manual(values = c('longdash', 'solid')) +
+  facet_wrap(~Classe, scales = 'free', ncol = 2) +
+  theme_minimal() +
+  theme(text = element_text(size = 18),
+        legend.position = 'top',
+        legend.text = element_text(size=16)) +
+  guides(color = "none")
+
+```
+
+1. Setor Residencial:
+
+O consumo residencial tem uma trajetória de crescimento contínuo e consistente ao longo dos anos. Partindo de cerca de 6 TWh em 2004, esse setor atinge quase 16 TWh em 2024. Esse crescimento está relacionado ao aumento populacional, maior poder aquisitivo, e maior eletrificação das residências, com mais famílias adquirindo eletrodomésticos, ar-condicionado, eletrônicos e outros aparelhos que demandam energia. Esse setor foi menos impactado pelas crises econômicas e pela pandemia, pois o consumo doméstico de energia tende a se manter ou até crescer durante períodos de confinamento, quando as famílias passam mais tempo em casa.
+
+2. Setor Industrial:
+
+O setor industrial, tradicionalmente o maior consumidor de energia, apresenta um comportamento mais volátil. Até 2014, o consumo de energia cresceu de forma moderada, atingindo cerca de 16 TWh. No entanto, a crise econômica de 2015 causou uma queda significativa no consumo, especialmente afetando a indústria de transformação e setores intensivos em energia. Após 2017, o setor mostrou sinais de recuperação, ainda que com oscilações, refletindo a lenta retomada da atividade industrial no país. A recuperação plena do setor industrial parece ocorrer somente após 2021, quando o consumo começa a voltar a níveis anteriores à crise, com crescimento projetado até 2024.
+
+3. Setor Comercial:
+
+O setor comercial exibe um crescimento constante no consumo de energia desde 2004, atingindo aproximadamente 9 TWh em 2024. Até 2014, o crescimento foi estável, impulsionado pela expansão do comércio e serviços no Brasil, refletindo o aumento do consumo por parte de estabelecimentos comerciais. No entanto, a partir de 2015, observa-se uma leve estagnação e até mesmo uma redução no consumo, que pode ser atribuída à recessão econômica daquele período. O impacto da pandemia de COVID-19 em 2020 também gerou uma queda temporária, devido à interrupção de atividades comerciais. A recuperação econômica a partir de 2021 é visível, com o consumo comercial voltando a crescer.
+
+4. Setor Rural:
+
+O setor rural apresenta um crescimento estável no consumo de energia elétrica, com um aumento gradual de cerca de 1,5 TWh em 2004 para 3 TWh em 2024. Esse comportamento reflete a maior mecanização da agricultura e a expansão da eletrificação nas áreas rurais. No entanto, o consumo rural é mais suscetível a oscilações, como demonstrado pela queda no consumo entre 2020 e 2021, que pode estar relacionada tanto a condições climáticas adversas quanto a mudanças na produção agrícola.
+
+5. Outros Setores:
+
+O setor denominado "Outros" agrupa atividades que não se enquadram nos principais setores mencionados. Ele apresenta um crescimento moderado e estável até 2015, com leve estagnação entre 2015 e 2020, e um crescimento moderado a partir de 2021. Esse padrão pode estar relacionado à diversificação de atividades e à eletrificação de setores menores ou emergentes, cuja demanda por energia é menos volátil do que o setor industrial, mas não tão estável quanto o residencial.
+
+# Diferenças Regionais no Consumo
+
+O Brasil é um país com grande variedade regional, e isso se reflete nos padrões de consumo de energia elétrica. Cada região possui suas próprias características econômicas, sociais e geográficas que influenciam diretamente a demanda por eletricidade. Ao longo das últimas duas décadas, o país como um todo experimentou um crescimento consistente no consumo energético, impulsionado pelo desenvolvimento econômico, expansão da infraestrutura e aumento populacional. No entanto, as oscilações no consumo são evidentes em certos períodos, especialmente em 2020, quando os efeitos da pandemia de COVID-19 impactaram fortemente a atividade econômica e, consequentemente, o consumo de energia. As regiões apresentam padrões distintos de consumo, com crescimento mais acentuado em algumas áreas, refletindo mudanças no desenvolvimento e industrialização.
+
+```{r grafico regional, fig.height=8, fig.width=10}
+
+### Consumo Regionais ####
+
+consumo %>%
+  dplyr::summarise(Consumo = sum(Consumo),
+                   .by = c(DataExcel, Regiao)) %>%
+  dplyr::mutate(DataExcel = tsibble::yearmonth(DataExcel)) %>%
+  tsibble::as_tsibble(index = DataExcel, key = Regiao) %>%
+  fabletools::model(STL(Consumo)) %>%
+  fabletools::components() %>%
+  dplyr::mutate(DataExcel = as.Date(DataExcel),
+                Regiao = factor(Regiao,
+                                levels = c("Norte",
+                                           "Nordeste",
+                                           "Centro-Oeste",
+                                           "Sudeste",
+                                           "Sul"))) %>%
+  ggplot() +
+  geom_line(aes(x = DataExcel,
+                y = Consumo,
+                color = Regiao,
+                linetype = 'Original'),
+            linewidth = 1.45,
+            alpha = 0.5) +
+  geom_line(aes(x = DataExcel,
+                y = trend,
+                color = Regiao,
+                linetype = 'Tendência'),
+            linewidth = 1.45) +
+  labs(
+    title = "Os Padrões Regionais no Brasil",
+       subtitle = "e as Variações Econômicas e Sociais Locais",
+       x = element_blank(),
+       y = element_blank(),
+       linetype = 'Série',
+       color = 'Região'
+    ) +
+  scale_x_date(date_breaks = '2 year',
+               date_labels = '%y') +
+  scale_y_continuous(labels = scales::number_format(suffix = ' TWh',
+                                                    scale = 1/1e6)) +
+  scale_linetype_manual(values = c('longdash', 'solid')) +
+  facet_wrap(~Regiao, scales = 'free', ncol = 2) +
+  theme_minimal() +
+  theme(text = element_text(size = 18),
+        legend.position = 'top') +
+  guides(color = "none")
+
+```
+
+### Região Norte:
+
+A Região Norte experimentou um crescimento contínuo no consumo de energia, partindo de 1,5 TWh em 2004 e atingindo 3,5 TWh em 2024. Esse crescimento está fortemente associado à expansão da infraestrutura, maior urbanização e aumento das atividades industriais. O crescimento da tendência, especialmente após 2018, sugere que a industrialização e os projetos de mineração podem ter um papel importante na demanda crescente por energia elétrica na região.
+
+```{r grafico norte,fig.height=9, fig.width=10}
+
+### Consumo no Norte ####
+
+consumo %>%
+  dplyr::filter(Regiao == 'Norte') %>%
+  dplyr::summarise(Consumo = sum(Consumo),
+                   .by = c(DataExcel, UF)) %>%
+  dplyr::mutate(DataExcel = tsibble::yearmonth(DataExcel)) %>%
+  tsibble::as_tsibble(index = DataExcel, key = UF) %>%
+  fabletools::model(STL(Consumo)) %>%
+  fabletools::components() %>%
+  dplyr::mutate(DataExcel = as.Date(DataExcel)) %>%
+  ggplot() +
+  geom_line(aes(x = DataExcel,
+                y = Consumo,
+                color = UF,
+                linetype = 'Original'),
+            linewidth = 1.45,
+            alpha = 0.5) +
+  geom_line(aes(x = DataExcel,
+                y = trend,
+                color = UF,
+                linetype = 'Tendência'),
+            linewidth = 1.45) +
+  labs(title = "O Contínuo Avanço na Região Norte",
+       subtitle = "da Expansão da Infraestrutura a Industrialização",
+       x = '',
+       y = '',
+       linetype = 'Série',
+       color = 'Setor') +
+  scale_x_date(date_breaks = '2 year',
+               date_labels = '%y') +
+  scale_y_continuous(labels = scales::number_format(suffix = ' TWh',
+                                                    scale = 1/1e6)) +
+  scale_linetype_manual(values = c('longdash', 'solid')) +
+  facet_wrap(~UF, scales = 'free', ncol = 2) +
+  theme_minimal() +
+  theme(text = element_text(size = 16),
+        legend.position = 'top') +
+  guides(color = "none")
+```
+
+* Acre (AC): O consumo de energia no Acre, que quase dobrou no período analisado, partiu de 0,05 TWh em 2004 e atingiu 0,10 TWh em 2024. Esse aumento está diretamente ligado ao crescimento populacional e à urbanização de cidades como Rio Branco. O estado tem uma economia baseada principalmente no setor de serviços e agropecuária, o que explica o crescimento constante e moderado no consumo de eletricidade.
+
+* Amazonas (AM): é o maior consumidor de energia na região Norte, com um salto de 0,3 TWh em 2004 para 0,7 TWh em 2024. Manaus, como principal polo industrial da região, lidera essa demanda. A Zona Franca de Manaus, com suas indústrias de eletroeletrônicos, informática e bens de consumo, é um grande responsável pelo crescimento. O desenvolvimento de infraestrutura para eletrificação nas áreas mais remotas também contribuiu para esse aumento significativo no consumo.
+
+* Amapá (AP): apresentou um aumento no consumo de 0,025 TWh para 0,125 TWh ao longo do período. A capital, Macapá, concentrou grande parte dessa demanda, impulsionada pelo crescimento urbano e pelo aumento no número de equipamentos elétricos nas residências e estabelecimentos comerciais. A implementação de programas de eletrificação em áreas mais afastadas, bem como o desenvolvimento do setor público e serviços, contribuiu para essa evolução.
+
+* Pará (PA): com seu enorme potencial energético e recursos minerais, viu seu consumo crescer de 1,2 TWh para 2,1 TWh entre 2004 e 2024. Esse aumento está fortemente relacionado à expansão da indústria de mineração, com grandes projetos de extração de bauxita e produção de alumínio, especialmente na região de Barcarena e Paragominas. A expansão do agronegócio e o desenvolvimento urbano em Belém também são fatores que explicam o aumento da demanda energética.
+
+* Rondônia (RO): com seu consumo saltando de 0,1 TWh para 0,35 TWh, reflete o crescimento econômico da região, especialmente no agronegócio e na pecuária. As atividades agroindustriais, como produção de soja, milho e carne, demandam cada vez mais energia. Além disso, a construção de grandes usinas hidrelétricas, como Santo Antônio e Jirau, não só aumentou a geração de energia local, mas também elevou o consumo no estado.
+
+* Roraima (RR): o estado com o menor consumo de energia da região, apresentou crescimento de 0,025 TWh para 0,1 TWh entre 2004 e 2024. Boa Vista, sua capital, concentra a maior parte da demanda, com o consumo aumentando à medida que novos projetos de infraestrutura são implantados. Vale notar que o estado ainda enfrenta desafios de conexão ao sistema elétrico nacional, dependendo de importação de energia da Venezuela em certos períodos.
+
+* Tocantins (TO): embora seja o mais novo do Brasil, teve um crescimento substancial no consumo de energia, passando de 0,10 TWh para 0,25 TWh. Palmas, sua capital planejada, tem sido um dos motores desse crescimento, com a expansão urbana e o desenvolvimento do setor de serviços. A crescente industrialização na região, com destaque para o agronegócio e a produção de grãos, também tem contribuído significativamente para a maior demanda energética.
+
+### Região Nordeste
+
+Na Região Nordeste, o consumo de energia seguiu um padrão de crescimento linear bastante estável. Em 2004, o consumo era de 4 TWh, atingindo 8 TWh em 2024. Esse aumento reflete o progresso econômico regional, que inclui a expansão de áreas urbanas e a implementação de programas de eletrificação rural. A recente aceleração entre 2021 e 2024 sugere o crescimento das atividades industriais e comerciais, com o avanço da infraestrutura regional.
+
+```{r grafico nordeste, fig.height=8, fig.width=10}
+
+### Consumo no Nordeste ####
+
+consumo %>%
+  dplyr::filter(Regiao == 'Nordeste') %>%
+  dplyr::summarise(Consumo = sum(Consumo),
+                   .by = c(DataExcel, UF)) %>%
+  dplyr::mutate(DataExcel = tsibble::yearmonth(DataExcel)) %>%
+  tsibble::as_tsibble(index = DataExcel, key = UF) %>%
+  fabletools::model(STL(Consumo)) %>%
+  fabletools::components() %>%
+  dplyr::mutate(DataExcel = as.Date(DataExcel)) %>%
+  ggplot() +
+  geom_line(aes(x = DataExcel,
+                y = Consumo,
+                color = UF,
+                linetype = 'Original'),
+            linewidth = 1.45,
+            alpha = 0.5) +
+  geom_line(aes(x = DataExcel,
+                y = trend,
+                color = UF,
+                linetype = 'Tendência'),
+            linewidth = 1.45) +
+  labs(
+    title ="O Crescimento Estável Nordestino",
+    subtitle = "do Desenvolvimento Urbano e Expansão da Infraestrutura",
+    x = '',
+    y = '',
+    linetype = 'Série',
+    color = 'Setor'
+  ) +
+  scale_x_date(date_breaks = '2 year',
+               date_labels = '%y') +
+  scale_y_continuous(labels = scales::number_format(suffix = ' TWh',
+                                                    scale = 1/1e6)) +
+  scale_linetype_manual(values = c('longdash', 'solid')) +
+  facet_wrap(~UF, scales = 'free', ncol = 2) +
+  theme_minimal() +
+  theme(text = element_text(size = 15),
+        legend.position = 'top') +
+  guides(color = "none")
+```
+
+* Alagoas (AL): Alagoas experimentou um aumento constante no consumo de energia, passando de 0,25 TWh para 0,55 TWh. A maior parte da demanda energética se concentra em Maceió, capital e principal centro econômico. O estado tem sua economia baseada principalmente no setor de serviços, no turismo e na indústria açucareira, que exigem um fornecimento estável de energia elétrica. A urbanização crescente, a expansão do setor comercial e o desenvolvimento de infraestrutura pública são fatores que sustentam o aumento contínuo da demanda energética.
+
+* Bahia (BA): A Bahia é o estado que mais consome energia na região, com seu consumo aumentando de 1,5 TWh em 2004 para 2,25 TWh em 2024. Esse crescimento expressivo está ligado ao desenvolvimento industrial, com destaque para o polo petroquímico de Camaçari, além das atividades agrícolas e da mineração. Salvador e outras cidades costeiras também têm uma forte demanda por eletricidade, impulsionada pelo turismo, setor de serviços e comércio. A Bahia possui um grande complexo industrial e um setor agrícola diversificado, o que contribui significativamente para o alto consumo de energia.
+
+* Ceará (CE): O Ceará viu seu consumo de energia dobrar, indo de 0,6 TWh para 1,2 TWh. A capital, Fortaleza, é o principal centro de consumo, com o estado investindo em setores como turismo, serviços e comércio, que demandam cada vez mais eletricidade. Além do crescimento urbano, o Ceará se destaca por investimentos em energias renováveis, como parques eólicos, que ajudam a diversificar a matriz energética e atender à crescente demanda.
+
+* Maranhão (MA): O Maranhão apresentou um comportamento energético volátil, com o consumo caindo entre 2014 e 2018 e depois se recuperando, atingindo 1,1 TWh em 2024. Isso se deve, em parte, às oscilações na atividade econômica, especialmente no setor agrícola e de indústrias baseadas em recursos naturais, como celulose e alumínio. A recuperação pós-2018 reflete investimentos industriais, especialmente no setor de produção agrícola, e melhorias na infraestrutura energética para atender a demandas crescentes no interior do estado.
+
+* Paraíba (PB): O consumo de energia na Paraíba aumentou de 0,3 TWh para 0,5 TWh. João Pessoa, capital e centro econômico do estado, concentra grande parte da demanda. O estado tem uma economia diversificada, com foco em serviços, turismo e o setor de construção civil. O aumento da eletrificação nas áreas rurais, juntamente com o crescimento do setor comercial e de serviços, contribui para o aumento contínuo da demanda por energia.
+
+* Pernambuco (PE): Pernambuco, que teve um aumento de 0,6 TWh para 1,4 TWh, destaca-se por seu desenvolvimento industrial, especialmente nas áreas metropolitanas de Recife e no Complexo Industrial Portuário de Suape. A região tem sido um dos motores econômicos do Nordeste, com forte crescimento nas áreas de comércio, serviços e turismo. O estado abriga uma série de indústrias químicas, alimentícias e de tecnologia, além de grandes centros logísticos que aumentam a demanda por energia. A modernização da infraestrutura elétrica e o crescimento dos setores residenciais também impulsionam esse aumento.
+
+* Piauí (PI): O Piauí aumentou seu consumo de energia de 0,1 TWh para 0,4 TWh. O crescimento é mais gradual em comparação com outros estados, refletindo o desenvolvimento mais lento do setor industrial e agrícola. A economia do estado é predominantemente rural, com grande foco no agronegócio e na produção de energia renovável. O Piauí tem investido fortemente na produção de energia eólica e solar, o que ajuda a atender a demanda crescente de eletricidade em áreas urbanas e rurais.
+
+* Rio Grande do Norte (RN): O Rio Grande do Norte, com um aumento de 0,3 TWh para 0,5 TWh, destaca-se por seu desenvolvimento no setor de energia eólica, sendo um dos maiores produtores de energia renovável do Brasil. Além disso, o estado tem uma economia diversificada, com setores fortes em turismo e agronegócio. O turismo, especialmente nas áreas costeiras, e o crescimento da infraestrutura urbana em Natal e outras cidades aumentam a demanda energética.
+
+* Sergipe (SE): Sergipe é o estado com o menor consumo de energia na região, crescendo de 0,2 TWh para 0,35 TWh entre 2004 e 2024. A economia de Sergipe é baseada no setor de serviços e na exploração de petróleo e gás, com Aracaju sendo o principal centro de demanda. O crescimento da demanda energética é influenciado pela modernização da infraestrutura urbana e pelo aumento das atividades comerciais e industriais em Aracaju e outras áreas urbanas.
+
+### Região Centro-Oeste
+
+O Centro-Oeste registrou um aumento constante no consumo de energia, partindo de 2 TWh em 2004 para cerca de 4 TWh em 2024. A região, conhecida por sua base agrícola, teve um crescimento acelerado no consumo energético nos últimos anos, refletindo a intensificação das atividades agrícolas e o aumento da produção de commodities. Esse padrão indica que o setor rural e industrial tem impulsionado a demanda crescente por eletricidade na região.
+
+```{r grafico centrooeste, fig.height=8, fig.width=10}
+
+### Consumo no Centro-Oeste ####
+
+consumo %>%
+  dplyr::filter(Regiao == 'Centro-Oeste') %>%
+  dplyr::summarise(Consumo = sum(Consumo),
+                   .by = c(DataExcel, UF)) %>%
+  dplyr::mutate(DataExcel = tsibble::yearmonth(DataExcel)) %>%
+  tsibble::as_tsibble(index = DataExcel, key = UF) %>%
+  fabletools::model(STL(Consumo)) %>%
+  fabletools::components() %>%
+  dplyr::mutate(DataExcel = as.Date(DataExcel)) %>%
+  ggplot() +
+  geom_line(aes(x = DataExcel,
+                y = Consumo,
+                color = UF,
+                linetype = 'Original'),
+            linewidth = 1.45,
+            alpha = 0.5) +
+  geom_line(aes(x = DataExcel,
+                y = trend,
+                color = UF,
+                linetype = 'Tendência'),
+            linewidth = 1.45) +
+  labs(
+    title = "O Crescimento Acelerado na Região Centro-Oeste",
+    subtitle = "da Expansão das Agrícola e Industrial",
+    x = '',
+    y = '',
+    linetype = 'Série',
+    color = 'Setor'
+  ) +
+  scale_x_date(date_breaks = '2 year',
+               date_labels = '%y') +
+  scale_y_continuous(labels = scales::number_format(suffix = ' TWh',
+                                                    scale = 1/1e6)) +
+  scale_linetype_manual(values = c('longdash', 'solid')) +
+  facet_wrap(~UF, scales = 'free', ncol = 2) +
+  theme_minimal() +
+  theme(text = element_text(size = 18),
+        legend.position = 'top') +
+  guides(color = "none")
+```
+
+* Distrito Federal (DF): Com uma economia concentrada em serviços, comércio e atividades administrativas, o Distrito Federal não apresenta grande variabilidade no consumo de energia, diferentemente de estados onde o agronegócio ou a indústria predominam. O consumo de energia no Distrito Federal aumentou de 0,3 TWh em 2004 para 0,6 TWh até 2014, estabilizando-se a partir desse período. Isso pode ser explicado pelo fato de Brasília ser uma cidade administrativa e de serviços, onde o crescimento populacional e econômico é mais controlado em comparação aos estados vizinhos. Entre 2015 e 2024, o gráfico mostra leves flutuações no consumo, que podem estar relacionadas a variáveis econômicas e sociais, como a crise econômica de 2015-2016 e a posterior recuperação. A economia do DF é altamente baseada em serviços, com destaque para a administração pública, o que reflete um padrão de consumo mais estável.
+
+* Goiás (GO): A expansão contínua do agronegócio, a industrialização e a urbanização são os principais motores do crescimento do consumo de energia em Goiás. Além disso, o estado tem investido em energias renováveis, como a solar, para atender à crescente demanda. Goiás experimentou um crescimento notável, com o consumo subindo de 0,6 TWh para 1,5 TWh entre 2004 e 2024. Esse crescimento acentuado é impulsionado pelo agronegócio, que é uma das principais forças econômicas do estado. Goiás é um dos maiores produtores de grãos e carne bovina do Brasil, e a energia elétrica é fundamental para sustentar as operações agrícolas, indústrias de alimentos e processadoras. Cidades como Goiânia e Anápolis são polos industriais e logísticos importantes, com destaque para a indústria alimentícia e farmacêutica. O aumento da urbanização nessas cidades também demanda mais energia para atender ao crescimento populacional e à expansão da infraestrutura urbana.
+
+Fatores de Crescimento:
+
+* Mato Grosso do Sul (MS): O crescimento das indústrias de alimentos, bioenergia e a expansão da infraestrutura urbana em cidades como Campo Grande são fatores que impulsionam o consumo energético no estado. O consumo de energia em Mato Grosso do Sul cresceu de 0,3 TWh para 1 TWh em 2024, um aumento expressivo que reflete o desenvolvimento acelerado do agronegócio no estado. A produção de soja, milho e carne são atividades econômicas de destaque, que exigem grande consumo de energia tanto nas fazendas quanto nas indústrias de processamento. O Mato Grosso do Sul é conhecido por suas vastas áreas agrícolas e pela pecuária extensiva, que demandam cada vez mais eletricidade para irrigação, processamento e transporte. A instalação de grandes usinas de biocombustíveis e plantas industriais no estado também aumenta a demanda energética.
+
+* Mato Grosso (MT): A urbanização em cidades como Cuiabá e Rondonópolis também elevam a demanda energética, uma vez que essas cidades estão se expandindo para acomodar o crescimento populacional e o aumento da atividade econômica. Mato Grosso tem se tornado um dos principais polos de exportação agrícola do Brasil, o que intensifica a demanda por infraestrutura energética. O agronegócio em Mato Grosso é altamente mecanizado e demanda um grande volume de energia para sustentar suas operações, desde a produção agrícola até a armazenagem e o processamento dos produtos. Além disso, a crescente industrialização em setores como a produção de alimentos e o beneficiamento de commodities também contribui para o aumento do consumo. O estado de Mato Grosso apresentou um crescimento robusto, com o consumo de energia aumentando de 0,3 TWh para 1 TWh entre 2004 e 2024. Esse aumento está diretamente relacionado ao crescimento do agronegócio, sendo Mato Grosso o maior produtor de soja, milho e algodão do Brasil.
+
+### Região Sudeste
+
+A Região Sudeste continua sendo a maior consumidora de energia elétrica no país, com seu consumo oscilando entre 16 TWh e 22 TWh entre 2004 e 2024. As oscilações observadas, especialmente entre 2016 e 2017, estão fortemente ligadas à crise econômica do país e à desaceleração industrial durante esse período. Após a estabilização entre 2014 e 2020, o consumo voltou a crescer com a retomada econômica a partir de 2021, refletindo o aumento na demanda energética pelos setores de serviços e comércio.
+
+```{r grafico sudeste, fig.height=8, fig.width=10}
+
+### Consumo no Sudeste ####
+
+consumo %>%
+  dplyr::filter(Regiao == 'Sudeste') %>%
+  dplyr::summarise(Consumo = sum(Consumo),
+                   .by = c(DataExcel, UF)) %>%
+  dplyr::mutate(DataExcel = tsibble::yearmonth(DataExcel)) %>%
+  tsibble::as_tsibble(index = DataExcel, key = UF) %>%
+  fabletools::model(STL(Consumo)) %>%
+  fabletools::components() %>%
+  dplyr::mutate(DataExcel = as.Date(DataExcel)) %>%
+  ggplot() +
+  geom_line(aes(x = DataExcel,
+                y = Consumo,
+                color = UF,
+                linetype = 'Original'),
+            linewidth = 1.45,
+            alpha = 0.5) +
+  geom_line(aes(x = DataExcel,
+                y = trend,
+                color = UF,
+                linetype = 'Tendência'),
+            linewidth = 1.45) +
+  labs(
+    title = "O Maior Centro Consumidor do País",
+    subtitle = "Influenciado por Oscilações e Retomada Pós-Crise no Sudeste",
+    x = element_blank(),
+    y = element_blank(),
+    linetype = 'Série',
+    color = 'Setor'
+  ) +
+  scale_x_date(date_breaks = '2 year',
+               date_labels = '%y') +
+  scale_y_continuous(labels = scales::number_format(suffix = ' TWh',
+                                                    scale = 1/1e6)) +
+  scale_linetype_manual(values = c('longdash', 'solid')) +
+  facet_wrap(~UF, scales = 'free', ncol = 2) +
+  theme_minimal() +
+  theme(text = element_text(size = 18),
+        legend.position = 'top') +
+  guides(color = "none")
+```
+
+* Espírito Santo (ES): As indústrias siderúrgicas e de petróleo são grandes consumidoras de energia no estado, e os altos e baixos no consumo podem estar ligados a crises nesses setores. Além disso, o crescimento da urbanização em Vitória e Vila Velha contribui para o aumento da demanda no setor residencial e comercial. O consumo de energia no Espírito Santo variou de 0,6 TWh em 2004 para 1 TWh em 2024. O gráfico mostra flutuações significativas ao longo do tempo, especialmente em torno de 2009 e 2016, refletindo a dependência do estado em setores como a indústria de petróleo e gás e a siderurgia, que sofreram com crises econômicas e quedas no preço de commodities.
+
+* Minas Gerais (MG): A mineração é uma atividade predominante no estado, e o crescimento do consumo reflete a expansão desse setor, além do aumento da urbanização em cidades como Belo Horizonte. A agricultura e a agroindústria também são relevantes no aumento da demanda energética. Minas Gerais apresentou um crescimento contínuo no consumo de energia, subindo de 3,7 TWh para 5 TWh ao longo do período analisado. O estado tem uma economia diversificada, com forte presença do setor industrial, especialmente mineração, siderurgia e metalurgia, que demandam grandes volumes de eletricidade.
+
+* Rio de Janeiro (RJ): O Rio de Janeiro é um centro industrial e de serviços, com grandes empresas no setor de petróleo, gás e energia. As crises econômicas, como a de 2015-2016, impactaram o consumo de energia, especialmente nas indústrias e no setor de serviços. No entanto, a recuperação pós-2017 é visível, acompanhando a retomada da economia fluminense. O consumo no Rio de Janeiro variou de 2,5 TWh em 2004 para 3,5 TWh em 2024. O gráfico mostra oscilações pronunciadas, com um pico em torno de 2015 seguido de uma queda até 2017, e posterior recuperação. Essas flutuações estão relacionadas à instabilidade econômica do estado, especialmente devido à crise fiscal e à dependência do setor de petróleo e gás.
+
+* São Paulo (SP): A demanda por energia em São Paulo é impulsionada pelo setor industrial (especialmente a produção de bens duráveis e manufatura), o setor de serviços (como comércio e finanças) e o crescimento populacional. A expansão do setor de tecnologia e o aumento da infraestrutura urbana também são fatores que impulsionam o consumo. São Paulo é o estado que mais consome energia no Brasil, com o consumo variando de 8 TWh em 2004 para 13 TWh em 2024. O estado é o maior centro industrial, financeiro e comercial do país, e o aumento constante do consumo de energia reflete o crescimento contínuo de sua economia.
+
+### Região Sul
+
+Na Região Sul, o consumo de energia passou de 5 TWh em 2004 para cerca de 9 TWh em 2024. A região, conhecida por sua forte base industrial e agrícola, manteve um padrão de crescimento linear e estável. Após 2020, o consumo aumentou consideravelmente, possivelmente devido ao crescimento das atividades agrícolas e da indústria de alimentos, setores-chave da economia sulista.
+
+```{r grafico sul, fig.height=8, fig.width=10}
+
+### Consumo no Sul ####
+
+consumo %>%
+  dplyr::filter(Regiao == 'Sul') %>%
+  dplyr::summarise(Consumo = sum(Consumo),
+                   .by = c(DataExcel, UF)) %>%
+  dplyr::mutate(DataExcel = tsibble::yearmonth(DataExcel)) %>%
+  tsibble::as_tsibble(index = DataExcel, key = UF) %>%
+  fabletools::model(STL(Consumo)) %>%
+  fabletools::components() %>%
+  dplyr::mutate(DataExcel = as.Date(DataExcel)) %>%
+  ggplot() +
+  geom_line(aes(x = DataExcel,
+                y = Consumo,
+                color = UF,
+                linetype = 'Original'),
+            linewidth = 1.45,
+            alpha = 0.5) +
+  geom_line(aes(x = DataExcel,
+                y = trend,
+                color = UF,
+                linetype = 'Tendência'),
+            linewidth = 1.45) +
+  labs(
+    title = "A Estabilidade Sulista",
+    subtitle = "Indústria e Agricultura Sustentam a Demanda Energética",
+    x = '',
+    y = '',
+    linetype = 'Série',
+    color = 'Setor') +
+  scale_x_date(date_breaks = '2 year',
+               date_labels = '%y') +
+  scale_y_continuous(labels = scales::number_format(suffix = ' TWh',
+                                                    scale = 1/1e6)) +
+  scale_linetype_manual(values = c('longdash', 'solid')) +
+  facet_wrap(~UF, scales = 'free', ncol = 2) +
+  theme_minimal() +
+  theme(text = element_text(size = 18),
+        legend.position = 'top') +
+  guides(color = "none")
+```
+
+* Paraná (PR): O estado tem uma economia fortemente baseada no agronegócio (produção de soja, milho e carne), além de um setor industrial significativo, especialmente em Curitiba e nas regiões metropolitanas. O crescimento contínuo no consumo de energia acompanha o aumento das atividades industriais e agrícolas, além da expansão urbana. O consumo de energia no Paraná aumentou de 1,6 TWh em 2004 para 3,5 TWh em 2024, conforme mostrado no gráfico e na tabela. O Paraná é um dos maiores estados agrícolas e industriais do país, e isso se reflete na demanda energética crescente.
+
+* Rio Grande do Sul (RS): O Rio Grande do Sul possui uma economia diversificada, com forte presença da agricultura (produção de soja, arroz e trigo), além de um setor industrial relevante (indústria de alimentos, couro e calçados). A dependência de setores vulneráveis à variabilidade de preços e clima pode explicar as oscilações no consumo de energia. O gráfico do Rio Grande do Sul mostra um crescimento no consumo de energia, variando de 2 TWh em 2004 para cerca de 3 TWh em 2024, com oscilações significativas entre 2014 e 2020. Essas oscilações podem estar relacionadas a crises econômicas que afetaram a indústria gaúcha, especialmente no setor de alimentos e agricultura.
+
+* Santa Catarina (SC): O estado tem uma base industrial forte, com centros como Joinville, Blumenau e Florianópolis, além de um agronegócio em expansão. O crescimento no consumo reflete o aumento das atividades industriais e urbanas, além da necessidade de infraestrutura para sustentar o crescimento populacional. O consumo de energia em Santa Catarina aumentou de 1,5 TWh para 2,5 TWh no período analisado. Santa Catarina tem uma economia diversificada, com destaque para a indústria têxtil, de alimentos, metalurgia e agronegócio, todos grandes consumidores de energia.
+
+# Consumo por Setores Industriais
+
+Historicamente, o setor industrial sempre foi o maior consumidor de energia elétrica no Brasil. Em 2020, ele representou aproximadamente 37% de todo o consumo energético do país. As indústrias de mineração, siderurgia e manufatura são particularmente intensivas em energia, especialmente no estado de Minas Gerais, onde as atividades de extração e processamento de metais são predominantes.
+
+Além disso, o aumento da produção agrícola no Centro-Oeste e a expansão de indústrias ligadas ao agronegócio têm impulsionado o crescimento do consumo de energia nesse setor.
+
+```{r grafico industrial, fig.height=10, fig.width=10}
+
+### Consumo Industrial ###
+
+setor %>%
+  dplyr::summarise(Consumo = sum(Consumo),
+                   .by = c(DataExcel, SetorIndustrial)) %>%
+  dplyr::mutate(DataExcel = tsibble::yearmonth(DataExcel)) %>%
+  tsibble::as_tsibble(index = DataExcel, key = SetorIndustrial) %>%
+  fabletools::model(STL(Consumo)) %>%
+  fabletools::components() %>%
+  dplyr::mutate(DataExcel = as.Date(DataExcel)) %>%
+  ggplot() +
+  geom_line(aes(x = DataExcel,
+                y = Consumo,
+                color = SetorIndustrial,
+                linetype = 'Original'),
+            linewidth = 1.45,
+            alpha = 0.5) +
+  geom_line(aes(x = DataExcel,
+                y = trend,
+                color = SetorIndustrial,
+                linetype = 'Tendência'),
+            linewidth = 1.4) +
+  labs(
+    x = '',
+    y = '',
+    linetype = 'Série',
+    color = 'Setor') +
+  scale_x_date(date_breaks = '4 year',
+               date_labels = '%y') +
+  scale_y_continuous(labels = scales::number_format(suffix = ' TWh',
+                                                    scale = 1/1e6)) +
+  scale_linetype_manual(values = c('longdash', 'solid')) +
+  scale_color_discrete(guide = 'none') +
+  facet_wrap(~SetorIndustrial, scales = 'free',
+             ncol = 2, labeller = label_wrap_gen(width = 40)) +
+  theme_minimal() +
+  theme(text = element_text(size = 18),
+        strip.text = element_text(size = 10),
+        legend.position = 'top')
+```
+
+# Referências

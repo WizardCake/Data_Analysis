@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2024-10-29">
+
+<title>Geração, Consumo e Consumidores de Energia Elétrica no Brasil</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+<script src="energia_pt1_files/libs/clipboard/clipboard.min.js"></script>
+<script src="energia_pt1_files/libs/quarto-html/quarto.js"></script>
+<script src="energia_pt1_files/libs/quarto-html/popper.min.js"></script>
+<script src="energia_pt1_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="energia_pt1_files/libs/quarto-html/anchor.min.js"></script>
+<link href="energia_pt1_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="energia_pt1_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="energia_pt1_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="energia_pt1_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="energia_pt1_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Geração, Consumo e Consumidores de Energia Elétrica no Brasil</h1>
+<p class="subtitle lead">Parte 1: O Consumo</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 29, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+<style type="text/css">
+
+body {
+
+background-color: #f8f1f5;
+
+}
+
+p {
+
+font-family: 'Roboto', sans-serif;
+
+font-size: 14pt;
+
+text-align: justify;
+
+}
+
+pre code {
+
+font-family: 'Fira Code';
+
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
+
+</style>
+</div>
+<section id="introdução" class="level1">
+<h1>Introdução</h1>
+<p>A energia elétrica é um pilar essencial para o desenvolvimento econômico e social de qualquer país e, no Brasil, não é diferente. Em um país de dimensões continentais, com uma população de mais de 212 milhões de pessoas e uma economia em constante transformação, o consumo de energia elétrica revela muito sobre as dinâmicas regionais e socioeconômicas. O objetivo deste relatório é analisar os padrões de consumo de energia elétrica no Brasil, destacando as variações e as tendências ao longo do tempo da matriz energética nacional.</p>
+<p>Esse estudo abrange os dados recentes de geração e consumo de energia e consumidores conectados à rede elétrica, com um foco especial nas macrorregiões e nas categorias que mais consomem. Também abordaremos os impactos de políticas de eficiência energética e o papel crescente das energias renováveis, como a solar e a eólica.</p>
+<section id="objetivo" class="level2">
+<h2 class="anchored" data-anchor-id="objetivo">Objetivo</h2>
+<p>O objetivo principal é compreender como o consumo de energia no Brasil está distribuído, quais fatores impulsionam esse consumo, e como o país pode enfrentar os desafios de uma demanda crescente, mantendo ao mesmo tempo a sustentabilidade ambiental e a segurança energética. Portanto, este relatório apresenta uma análise detalhada do consumo de energia elétrica no Brasil, baseada em dados históricos e setoriais. Utilizaremos gráficos e pramagação em R para ilustrar as principais tendências e comparações entre regiões e setores.</p>
+</section>
+<section id="pacotes-utilizados" class="level2">
+<h2 class="anchored" data-anchor-id="pacotes-utilizados">Pacotes Utilizados</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Package</th>
+<th style="text-align: left;">Version</th>
+<th style="text-align: left;">Citation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">base</td>
+<td style="text-align: left;">4.4.1</td>
+<td style="text-align: left;"><span class="citation" data-cites="base">R Core Team (<a href="#ref-base" role="doc-biblioref">2024</a>)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">basedosdados</td>
+<td style="text-align: left;">0.2.2</td>
+<td style="text-align: left;"><span class="citation" data-cites="basedosdados">Cavalcante, Herszenhut, and Dornelles (<a href="#ref-basedosdados" role="doc-biblioref">2023</a>)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fabletools</td>
+<td style="text-align: left;">0.5.0</td>
+<td style="text-align: left;"><span class="citation" data-cites="fabletools">O’Hara-Wild, Hyndman, and Wang (<a href="#ref-fabletools" role="doc-biblioref">2024</a>)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fpp3</td>
+<td style="text-align: left;">1.0.1</td>
+<td style="text-align: left;"><span class="citation" data-cites="fpp3">Hyndman (<a href="#ref-fpp3" role="doc-biblioref">2024</a>)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">geobr</td>
+<td style="text-align: left;">1.9.1</td>
+<td style="text-align: left;"><span class="citation" data-cites="geobr">Pereira and Goncalves (<a href="#ref-geobr" role="doc-biblioref">2024</a>)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">gganimate</td>
+<td style="text-align: left;">1.0.9</td>
+<td style="text-align: left;"><span class="citation" data-cites="gganimate">Pedersen and Robinson (<a href="#ref-gganimate" role="doc-biblioref">2024</a>)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ggthemes</td>
+<td style="text-align: left;">5.1.0</td>
+<td style="text-align: left;"><span class="citation" data-cites="ggthemes">Arnold (<a href="#ref-ggthemes" role="doc-biblioref">2024</a>)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">knitr</td>
+<td style="text-align: left;">1.48</td>
+<td style="text-align: left;"><span class="citation" data-cites="knitr2014">Xie (<a href="#ref-knitr2014" role="doc-biblioref">2014</a>)</span>; <span class="citation" data-cites="knitr2015">Xie (<a href="#ref-knitr2015" role="doc-biblioref">2015</a>)</span>; <span class="citation" data-cites="knitr2024">Xie (<a href="#ref-knitr2024" role="doc-biblioref">2024</a>)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">patchwork</td>
+<td style="text-align: left;">1.3.0</td>
+<td style="text-align: left;"><span class="citation" data-cites="patchwork">Pedersen (<a href="#ref-patchwork" role="doc-biblioref">2024</a>)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">prettydoc</td>
+<td style="text-align: left;">0.4.1</td>
+<td style="text-align: left;"><span class="citation" data-cites="prettydoc">Qiu (<a href="#ref-prettydoc" role="doc-biblioref">2021</a>)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rmarkdown</td>
+<td style="text-align: left;">2.28</td>
+<td style="text-align: left;"><span class="citation" data-cites="rmarkdown2018">Xie, Allaire, and Grolemund (<a href="#ref-rmarkdown2018" role="doc-biblioref">2018</a>)</span>; <span class="citation" data-cites="rmarkdown2020">Xie, Dervieux, and Riederer (<a href="#ref-rmarkdown2020" role="doc-biblioref">2020</a>)</span>; <span class="citation" data-cites="rmarkdown2024">Allaire et al. (<a href="#ref-rmarkdown2024" role="doc-biblioref">2024</a>)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">scales</td>
+<td style="text-align: left;">1.3.0</td>
+<td style="text-align: left;"><span class="citation" data-cites="scales">Wickham, Pedersen, and Seidel (<a href="#ref-scales" role="doc-biblioref">2023</a>)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tidyverse</td>
+<td style="text-align: left;">2.0.0</td>
+<td style="text-align: left;"><span class="citation" data-cites="tidyverse">Wickham et al. (<a href="#ref-tidyverse" role="doc-biblioref">2019</a>)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tsibble</td>
+<td style="text-align: left;">1.1.5</td>
+<td style="text-align: left;"><span class="citation" data-cites="tsibble">Wang, Cook, and Hyndman (<a href="#ref-tsibble" role="doc-biblioref">2020</a>)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="dados-utilizados" class="level2">
+<h2 class="anchored" data-anchor-id="dados-utilizados">Dados Utilizados</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Baixar o arquivo temporariamente</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://www.epe.gov.br/sites-pt/publicacoes-dados-abertos/dados-abertos/Documents/Dados_abertos_Consumo_Mensal.xlsx"</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>temp_file <span class="ot">&lt;-</span> base<span class="sc">::</span><span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">".xlsx"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Download do arquivo</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>httr<span class="sc">::</span><span class="fu">GET</span>(url, httr<span class="sc">::</span><span class="fu">write_disk</span>(temp_file, <span class="at">overwrite =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ler o arquivo Excel</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>consumo <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(temp_file, <span class="at">sheet =</span> <span class="dv">2</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>setor <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(temp_file, <span class="at">sheet =</span> <span class="dv">3</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Estados ---</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>estados <span class="ot">&lt;-</span> geobr<span class="sc">::</span><span class="fu">read_state</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="padrões-de-consumo-ao-longo-do-tempo" class="level1">
+<h1>Padrões de Consumo ao Longo do Tempo</h1>
+<p>Nos últimos 20 anos, o consumo de energia elétrica no Brasil tem mostrado uma tendência de crescimento consistente, embora marcada por alguns eventos críticos que geraram flutuações. Essa trajetória de longo prazo reflete o desenvolvimento econômico do país, a expansão populacional e o aumento da urbanização, além de uma maior eletrificação dos setores produtivos e das residências. No entanto, ao longo desse período, crises econômicas e políticas, como a recessão de 2014-2016 e os efeitos da pandemia de COVID-19 em 2020, geraram quedas pontuais no consumo, destacando a sensibilidade do setor energético às condições econômicas e sociais.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Consumo Total ####</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>consumo <span class="sc">%&gt;%</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">Consumo =</span> <span class="fu">sum</span>(Consumo),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">.by =</span> <span class="fu">c</span>(DataExcel)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">DataExcel =</span> tsibble<span class="sc">::</span><span class="fu">yearmonth</span>(DataExcel)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  tsibble<span class="sc">::</span><span class="fu">as_tsibble</span>(<span class="at">index =</span> DataExcel) <span class="sc">%&gt;%</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  fabletools<span class="sc">::</span><span class="fu">model</span>(<span class="fu">STL</span>(Consumo)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  fabletools<span class="sc">::</span><span class="fu">components</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">DataExcel =</span> <span class="fu">as.Date</span>(DataExcel)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> DataExcel,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> Consumo,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">linetype =</span> <span class="st">'Original'</span>),</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">1.45</span>,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">alpha =</span> <span class="fl">0.45</span>) <span class="sc">+</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> DataExcel,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> trend,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>                <span class="at">linetype =</span> <span class="st">'Tendencia'</span>),</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">1.45</span>) <span class="sc">+</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"A Crescente Tendência da Demanda Energética"</span>,</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"e as Recessão e Pandemia como seus Freios"</span>,</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">''</span>,</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">''</span>,</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">'Serie'</span>,</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">'Setor'</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">'2 year'</span>,</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>               <span class="at">date_labels =</span> <span class="st">'%y'</span>) <span class="sc">+</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">number_format</span>(<span class="at">suffix =</span> <span class="st">' TWh'</span>,</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>                                                    <span class="at">scale =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="fl">1e6</span>)) <span class="sc">+</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">'longdash'</span>, <span class="st">'solid'</span>)) <span class="sc">+</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>),</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">'top'</span>,</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="energia_pt1_files/figure-html/grafico%20total-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<section id="entre-o-crescimento-e-as-crises" class="level2">
+<h2 class="anchored" data-anchor-id="entre-o-crescimento-e-as-crises">Entre o Crescimento e as Crises:</h2>
+<p>Entre 2004 e 2014, o gráfico mostra um aumento constante no consumo de energia, atingindo um patamar de aproximadamente 40 TWh. Esse período coincide com o crescimento econômico sustentado no Brasil, quando a demanda por eletricidade acompanhou o aumento da produção industrial e o consumo residencial mais intensivo, impulsionado pela maior disponibilidade de crédito, aumento da renda e popularização de equipamentos eletroeletrônicos.</p>
+<p>No entanto, a partir de 2015, observa-se uma estagnação e, em alguns casos, uma leve redução no consumo de energia. Isso pode ser diretamente associado à recessão econômica que o país enfrentou, durante a qual a desaceleração industrial e a retração do consumo das famílias impactaram o uso de eletricidade. Este período de desaceleração é claramente representado no gráfico pela quebra da tendência de crescimento.</p>
+<p>Já a pandemia de COVID-19, em 2020, provocou uma nova contração na demanda de energia, conforme a atividade econômica foi interrompida, sobretudo nos setores industrial e de serviços. A interrupção temporária das atividades de fábricas, comércios e serviços resultou em uma queda abrupta no consumo de eletricidade. Entretanto, o impacto da pandemia não foi duradouro, como demonstrado pela recuperação rápida observada em 2021, quando o consumo de energia elétrica volta a crescer.</p>
+</section>
+<section id="os-tipos-de-consumo" class="level2">
+<h2 class="anchored" data-anchor-id="os-tipos-de-consumo">Os tipos de Consumo</h2>
+<p>Ao analisar o consumo de energia elétrica no Brasil ao longo dos últimos 20 anos, percebe-se um comportamento distinto entre os diferentes setores econômicos. Cada segmento — comercial, industrial, residencial, rural e outros — apresenta dinâmicas próprias, moldadas por fatores econômicos, sociais e estruturais.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Consumo por Classe ####</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>consumo <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">Consumo =</span> <span class="fu">sum</span>(Consumo),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">.by =</span> <span class="fu">c</span>(DataExcel, Classe)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">DataExcel =</span> tsibble<span class="sc">::</span><span class="fu">yearmonth</span>(DataExcel)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  tsibble<span class="sc">::</span><span class="fu">as_tsibble</span>(<span class="at">index =</span> DataExcel, <span class="at">key =</span> Classe) <span class="sc">%&gt;%</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  fabletools<span class="sc">::</span><span class="fu">model</span>(<span class="fu">STL</span>(Consumo)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  fabletools<span class="sc">::</span><span class="fu">components</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">DataExcel =</span> <span class="fu">as.Date</span>(DataExcel),</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">Classe =</span> <span class="fu">factor</span>(Classe,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>                                <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Residencial"</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">"Industrial"</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">"Comercial"</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">"Rural"</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">"Outros"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> DataExcel,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> Consumo,</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> Classe,</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>                <span class="at">linetype =</span> <span class="st">'Original'</span>),</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">1.45</span>,</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>            <span class="at">alpha =</span> <span class="fl">0.45</span>) <span class="sc">+</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> DataExcel,</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> trend,</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> Classe,</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>                <span class="at">linetype =</span> <span class="st">'Tendencia'</span>),</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">1.45</span>) <span class="sc">+</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"As Distintas Dinâmicas das Classes no Brasil"</span>,</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"o Crescimento Contra a Volatilidade em duas décadas"</span>,</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">''</span>,</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">''</span>,</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>       <span class="at">linetype =</span> <span class="st">'Serie'</span>,</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">'Setor'</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">'2 year'</span>,</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>               <span class="at">date_labels =</span> <span class="st">'%y'</span>) <span class="sc">+</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">number_format</span>(<span class="at">suffix =</span> <span class="st">' TWh'</span>,</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>                                                    <span class="at">scale =</span> <span class="dv">1</span><span class="sc">/</span><span class="fl">1e6</span>)) <span class="sc">+</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">'longdash'</span>, <span class="st">'solid'</span>)) <span class="sc">+</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Classe, <span class="at">scales =</span> <span class="st">'free'</span>, <span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>),</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">'top'</span>,</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">16</span>)) <span class="sc">+</span></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="energia_pt1_files/figure-html/grafico%20classe-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<ol type="1">
+<li>Setor Residencial:</li>
+</ol>
+<p>O consumo residencial tem uma trajetória de crescimento contínuo e consistente ao longo dos anos. Partindo de cerca de 6 TWh em 2004, esse setor atinge quase 16 TWh em 2024. Esse crescimento está relacionado ao aumento populacional, maior poder aquisitivo, e maior eletrificação das residências, com mais famílias adquirindo eletrodomésticos, ar-condicionado, eletrônicos e outros aparelhos que demandam energia. Esse setor foi menos impactado pelas crises econômicas e pela pandemia, pois o consumo doméstico de energia tende a se manter ou até crescer durante períodos de confinamento, quando as famílias passam mais tempo em casa.</p>
+<ol start="2" type="1">
+<li>Setor Industrial:</li>
+</ol>
+<p>O setor industrial, tradicionalmente o maior consumidor de energia, apresenta um comportamento mais volátil. Até 2014, o consumo de energia cresceu de forma moderada, atingindo cerca de 16 TWh. No entanto, a crise econômica de 2015 causou uma queda significativa no consumo, especialmente afetando a indústria de transformação e setores intensivos em energia. Após 2017, o setor mostrou sinais de recuperação, ainda que com oscilações, refletindo a lenta retomada da atividade industrial no país. A recuperação plena do setor industrial parece ocorrer somente após 2021, quando o consumo começa a voltar a níveis anteriores à crise, com crescimento projetado até 2024.</p>
+<ol start="3" type="1">
+<li>Setor Comercial:</li>
+</ol>
+<p>O setor comercial exibe um crescimento constante no consumo de energia desde 2004, atingindo aproximadamente 9 TWh em 2024. Até 2014, o crescimento foi estável, impulsionado pela expansão do comércio e serviços no Brasil, refletindo o aumento do consumo por parte de estabelecimentos comerciais. No entanto, a partir de 2015, observa-se uma leve estagnação e até mesmo uma redução no consumo, que pode ser atribuída à recessão econômica daquele período. O impacto da pandemia de COVID-19 em 2020 também gerou uma queda temporária, devido à interrupção de atividades comerciais. A recuperação econômica a partir de 2021 é visível, com o consumo comercial voltando a crescer.</p>
+<ol start="4" type="1">
+<li>Setor Rural:</li>
+</ol>
+<p>O setor rural apresenta um crescimento estável no consumo de energia elétrica, com um aumento gradual de cerca de 1,5 TWh em 2004 para 3 TWh em 2024. Esse comportamento reflete a maior mecanização da agricultura e a expansão da eletrificação nas áreas rurais. No entanto, o consumo rural é mais suscetível a oscilações, como demonstrado pela queda no consumo entre 2020 e 2021, que pode estar relacionada tanto a condições climáticas adversas quanto a mudanças na produção agrícola.</p>
+<ol start="5" type="1">
+<li>Outros Setores:</li>
+</ol>
+<p>O setor denominado “Outros” agrupa atividades que não se enquadram nos principais setores mencionados. Ele apresenta um crescimento moderado e estável até 2015, com leve estagnação entre 2015 e 2020, e um crescimento moderado a partir de 2021. Esse padrão pode estar relacionado à diversificação de atividades e à eletrificação de setores menores ou emergentes, cuja demanda por energia é menos volátil do que o setor industrial, mas não tão estável quanto o residencial.</p>
+</section>
+</section>
+<section id="diferenças-regionais-no-consumo" class="level1">
+<h1>Diferenças Regionais no Consumo</h1>
+<p>O Brasil é um país com grande variedade regional, e isso se reflete nos padrões de consumo de energia elétrica. Cada região possui suas próprias características econômicas, sociais e geográficas que influenciam diretamente a demanda por eletricidade. Ao longo das últimas duas décadas, o país como um todo experimentou um crescimento consistente no consumo energético, impulsionado pelo desenvolvimento econômico, expansão da infraestrutura e aumento populacional. No entanto, as oscilações no consumo são evidentes em certos períodos, especialmente em 2020, quando os efeitos da pandemia de COVID-19 impactaram fortemente a atividade econômica e, consequentemente, o consumo de energia. As regiões apresentam padrões distintos de consumo, com crescimento mais acentuado em algumas áreas, refletindo mudanças no desenvolvimento e industrialização.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Consumo Regionais ####</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>consumo <span class="sc">%&gt;%</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">Consumo =</span> <span class="fu">sum</span>(Consumo),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">.by =</span> <span class="fu">c</span>(DataExcel, Regiao)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">DataExcel =</span> tsibble<span class="sc">::</span><span class="fu">yearmonth</span>(DataExcel)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  tsibble<span class="sc">::</span><span class="fu">as_tsibble</span>(<span class="at">index =</span> DataExcel, <span class="at">key =</span> Regiao) <span class="sc">%&gt;%</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  fabletools<span class="sc">::</span><span class="fu">model</span>(<span class="fu">STL</span>(Consumo)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  fabletools<span class="sc">::</span><span class="fu">components</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">DataExcel =</span> <span class="fu">as.Date</span>(DataExcel),</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">Regiao =</span> <span class="fu">factor</span>(Regiao,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>                                <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Norte"</span>,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">"Nordeste"</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">"Centro-Oeste"</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">"Sudeste"</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">"Sul"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> DataExcel,</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> Consumo,</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> Regiao,</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>                <span class="at">linetype =</span> <span class="st">'Original'</span>),</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">1.45</span>,</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>            <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> DataExcel,</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> trend,</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> Regiao,</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>                <span class="at">linetype =</span> <span class="st">'Tendência'</span>),</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">1.45</span>) <span class="sc">+</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Os Padrões Regionais no Brasil"</span>,</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"e as Variações Econômicas e Sociais Locais"</span>,</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>       <span class="at">linetype =</span> <span class="st">'Série'</span>,</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">'Região'</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">'2 year'</span>,</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>               <span class="at">date_labels =</span> <span class="st">'%y'</span>) <span class="sc">+</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">number_format</span>(<span class="at">suffix =</span> <span class="st">' TWh'</span>,</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>                                                    <span class="at">scale =</span> <span class="dv">1</span><span class="sc">/</span><span class="fl">1e6</span>)) <span class="sc">+</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">'longdash'</span>, <span class="st">'solid'</span>)) <span class="sc">+</span></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Regiao, <span class="at">scales =</span> <span class="st">'free'</span>, <span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>),</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">'top'</span>) <span class="sc">+</span></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="energia_pt1_files/figure-html/grafico%20regional-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<section id="região-norte" class="level3">
+<h3 class="anchored" data-anchor-id="região-norte">Região Norte:</h3>
+<p>A Região Norte experimentou um crescimento contínuo no consumo de energia, partindo de 1,5 TWh em 2004 e atingindo 3,5 TWh em 2024. Esse crescimento está fortemente associado à expansão da infraestrutura, maior urbanização e aumento das atividades industriais. O crescimento da tendência, especialmente após 2018, sugere que a industrialização e os projetos de mineração podem ter um papel importante na demanda crescente por energia elétrica na região.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Consumo no Norte ####</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>consumo <span class="sc">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Regiao <span class="sc">==</span> <span class="st">'Norte'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">Consumo =</span> <span class="fu">sum</span>(Consumo),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">.by =</span> <span class="fu">c</span>(DataExcel, UF)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">DataExcel =</span> tsibble<span class="sc">::</span><span class="fu">yearmonth</span>(DataExcel)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  tsibble<span class="sc">::</span><span class="fu">as_tsibble</span>(<span class="at">index =</span> DataExcel, <span class="at">key =</span> UF) <span class="sc">%&gt;%</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  fabletools<span class="sc">::</span><span class="fu">model</span>(<span class="fu">STL</span>(Consumo)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  fabletools<span class="sc">::</span><span class="fu">components</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">DataExcel =</span> <span class="fu">as.Date</span>(DataExcel)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> DataExcel,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> Consumo,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> UF,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">linetype =</span> <span class="st">'Original'</span>),</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">1.45</span>,</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> DataExcel,</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> trend,</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> UF,</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>                <span class="at">linetype =</span> <span class="st">'Tendência'</span>),</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">1.45</span>) <span class="sc">+</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"O Contínuo Avanço na Região Norte"</span>,</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"da Expansão da Infraestrutura a Industrialização"</span>,</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">''</span>,</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">''</span>,</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">linetype =</span> <span class="st">'Série'</span>,</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">'Setor'</span>) <span class="sc">+</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">'2 year'</span>,</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>               <span class="at">date_labels =</span> <span class="st">'%y'</span>) <span class="sc">+</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">number_format</span>(<span class="at">suffix =</span> <span class="st">' TWh'</span>,</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>                                                    <span class="at">scale =</span> <span class="dv">1</span><span class="sc">/</span><span class="fl">1e6</span>)) <span class="sc">+</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">'longdash'</span>, <span class="st">'solid'</span>)) <span class="sc">+</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>UF, <span class="at">scales =</span> <span class="st">'free'</span>, <span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">'top'</span>) <span class="sc">+</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="energia_pt1_files/figure-html/grafico%20norte-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<ul>
+<li><p>Acre (AC): O consumo de energia no Acre, que quase dobrou no período analisado, partiu de 0,05 TWh em 2004 e atingiu 0,10 TWh em 2024. Esse aumento está diretamente ligado ao crescimento populacional e à urbanização de cidades como Rio Branco. O estado tem uma economia baseada principalmente no setor de serviços e agropecuária, o que explica o crescimento constante e moderado no consumo de eletricidade.</p></li>
+<li><p>Amazonas (AM): é o maior consumidor de energia na região Norte, com um salto de 0,3 TWh em 2004 para 0,7 TWh em 2024. Manaus, como principal polo industrial da região, lidera essa demanda. A Zona Franca de Manaus, com suas indústrias de eletroeletrônicos, informática e bens de consumo, é um grande responsável pelo crescimento. O desenvolvimento de infraestrutura para eletrificação nas áreas mais remotas também contribuiu para esse aumento significativo no consumo.</p></li>
+<li><p>Amapá (AP): apresentou um aumento no consumo de 0,025 TWh para 0,125 TWh ao longo do período. A capital, Macapá, concentrou grande parte dessa demanda, impulsionada pelo crescimento urbano e pelo aumento no número de equipamentos elétricos nas residências e estabelecimentos comerciais. A implementação de programas de eletrificação em áreas mais afastadas, bem como o desenvolvimento do setor público e serviços, contribuiu para essa evolução.</p></li>
+<li><p>Pará (PA): com seu enorme potencial energético e recursos minerais, viu seu consumo crescer de 1,2 TWh para 2,1 TWh entre 2004 e 2024. Esse aumento está fortemente relacionado à expansão da indústria de mineração, com grandes projetos de extração de bauxita e produção de alumínio, especialmente na região de Barcarena e Paragominas. A expansão do agronegócio e o desenvolvimento urbano em Belém também são fatores que explicam o aumento da demanda energética.</p></li>
+<li><p>Rondônia (RO): com seu consumo saltando de 0,1 TWh para 0,35 TWh, reflete o crescimento econômico da região, especialmente no agronegócio e na pecuária. As atividades agroindustriais, como produção de soja, milho e carne, demandam cada vez mais energia. Além disso, a construção de grandes usinas hidrelétricas, como Santo Antônio e Jirau, não só aumentou a geração de energia local, mas também elevou o consumo no estado.</p></li>
+<li><p>Roraima (RR): o estado com o menor consumo de energia da região, apresentou crescimento de 0,025 TWh para 0,1 TWh entre 2004 e 2024. Boa Vista, sua capital, concentra a maior parte da demanda, com o consumo aumentando à medida que novos projetos de infraestrutura são implantados. Vale notar que o estado ainda enfrenta desafios de conexão ao sistema elétrico nacional, dependendo de importação de energia da Venezuela em certos períodos.</p></li>
+<li><p>Tocantins (TO): embora seja o mais novo do Brasil, teve um crescimento substancial no consumo de energia, passando de 0,10 TWh para 0,25 TWh. Palmas, sua capital planejada, tem sido um dos motores desse crescimento, com a expansão urbana e o desenvolvimento do setor de serviços. A crescente industrialização na região, com destaque para o agronegócio e a produção de grãos, também tem contribuído significativamente para a maior demanda energética.</p></li>
+</ul>
+</section>
+<section id="região-nordeste" class="level3">
+<h3 class="anchored" data-anchor-id="região-nordeste">Região Nordeste</h3>
+<p>Na Região Nordeste, o consumo de energia seguiu um padrão de crescimento linear bastante estável. Em 2004, o consumo era de 4 TWh, atingindo 8 TWh em 2024. Esse aumento reflete o progresso econômico regional, que inclui a expansão de áreas urbanas e a implementação de programas de eletrificação rural. A recente aceleração entre 2021 e 2024 sugere o crescimento das atividades industriais e comerciais, com o avanço da infraestrutura regional.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Consumo no Nordeste ####</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>consumo <span class="sc">%&gt;%</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Regiao <span class="sc">==</span> <span class="st">'Nordeste'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">Consumo =</span> <span class="fu">sum</span>(Consumo),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">.by =</span> <span class="fu">c</span>(DataExcel, UF)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">DataExcel =</span> tsibble<span class="sc">::</span><span class="fu">yearmonth</span>(DataExcel)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  tsibble<span class="sc">::</span><span class="fu">as_tsibble</span>(<span class="at">index =</span> DataExcel, <span class="at">key =</span> UF) <span class="sc">%&gt;%</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  fabletools<span class="sc">::</span><span class="fu">model</span>(<span class="fu">STL</span>(Consumo)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  fabletools<span class="sc">::</span><span class="fu">components</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">DataExcel =</span> <span class="fu">as.Date</span>(DataExcel)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> DataExcel,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> Consumo,</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> UF,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">linetype =</span> <span class="st">'Original'</span>),</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">1.45</span>,</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> DataExcel,</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> trend,</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> UF,</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>                <span class="at">linetype =</span> <span class="st">'Tendência'</span>),</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">1.45</span>) <span class="sc">+</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span><span class="st">"O Crescimento Estável Nordestino"</span>,</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"do Desenvolvimento Urbano e Expansão da Infraestrutura"</span>,</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">''</span>,</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">''</span>,</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">'Série'</span>,</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">'Setor'</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">'2 year'</span>,</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>               <span class="at">date_labels =</span> <span class="st">'%y'</span>) <span class="sc">+</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">number_format</span>(<span class="at">suffix =</span> <span class="st">' TWh'</span>,</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>                                                    <span class="at">scale =</span> <span class="dv">1</span><span class="sc">/</span><span class="fl">1e6</span>)) <span class="sc">+</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">'longdash'</span>, <span class="st">'solid'</span>)) <span class="sc">+</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>UF, <span class="at">scales =</span> <span class="st">'free'</span>, <span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">15</span>),</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">'top'</span>) <span class="sc">+</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="energia_pt1_files/figure-html/grafico%20nordeste-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<ul>
+<li><p>Alagoas (AL): Alagoas experimentou um aumento constante no consumo de energia, passando de 0,25 TWh para 0,55 TWh. A maior parte da demanda energética se concentra em Maceió, capital e principal centro econômico. O estado tem sua economia baseada principalmente no setor de serviços, no turismo e na indústria açucareira, que exigem um fornecimento estável de energia elétrica. A urbanização crescente, a expansão do setor comercial e o desenvolvimento de infraestrutura pública são fatores que sustentam o aumento contínuo da demanda energética.</p></li>
+<li><p>Bahia (BA): A Bahia é o estado que mais consome energia na região, com seu consumo aumentando de 1,5 TWh em 2004 para 2,25 TWh em 2024. Esse crescimento expressivo está ligado ao desenvolvimento industrial, com destaque para o polo petroquímico de Camaçari, além das atividades agrícolas e da mineração. Salvador e outras cidades costeiras também têm uma forte demanda por eletricidade, impulsionada pelo turismo, setor de serviços e comércio. A Bahia possui um grande complexo industrial e um setor agrícola diversificado, o que contribui significativamente para o alto consumo de energia.</p></li>
+<li><p>Ceará (CE): O Ceará viu seu consumo de energia dobrar, indo de 0,6 TWh para 1,2 TWh. A capital, Fortaleza, é o principal centro de consumo, com o estado investindo em setores como turismo, serviços e comércio, que demandam cada vez mais eletricidade. Além do crescimento urbano, o Ceará se destaca por investimentos em energias renováveis, como parques eólicos, que ajudam a diversificar a matriz energética e atender à crescente demanda.</p></li>
+<li><p>Maranhão (MA): O Maranhão apresentou um comportamento energético volátil, com o consumo caindo entre 2014 e 2018 e depois se recuperando, atingindo 1,1 TWh em 2024. Isso se deve, em parte, às oscilações na atividade econômica, especialmente no setor agrícola e de indústrias baseadas em recursos naturais, como celulose e alumínio. A recuperação pós-2018 reflete investimentos industriais, especialmente no setor de produção agrícola, e melhorias na infraestrutura energética para atender a demandas crescentes no interior do estado.</p></li>
+<li><p>Paraíba (PB): O consumo de energia na Paraíba aumentou de 0,3 TWh para 0,5 TWh. João Pessoa, capital e centro econômico do estado, concentra grande parte da demanda. O estado tem uma economia diversificada, com foco em serviços, turismo e o setor de construção civil. O aumento da eletrificação nas áreas rurais, juntamente com o crescimento do setor comercial e de serviços, contribui para o aumento contínuo da demanda por energia.</p></li>
+<li><p>Pernambuco (PE): Pernambuco, que teve um aumento de 0,6 TWh para 1,4 TWh, destaca-se por seu desenvolvimento industrial, especialmente nas áreas metropolitanas de Recife e no Complexo Industrial Portuário de Suape. A região tem sido um dos motores econômicos do Nordeste, com forte crescimento nas áreas de comércio, serviços e turismo. O estado abriga uma série de indústrias químicas, alimentícias e de tecnologia, além de grandes centros logísticos que aumentam a demanda por energia. A modernização da infraestrutura elétrica e o crescimento dos setores residenciais também impulsionam esse aumento.</p></li>
+<li><p>Piauí (PI): O Piauí aumentou seu consumo de energia de 0,1 TWh para 0,4 TWh. O crescimento é mais gradual em comparação com outros estados, refletindo o desenvolvimento mais lento do setor industrial e agrícola. A economia do estado é predominantemente rural, com grande foco no agronegócio e na produção de energia renovável. O Piauí tem investido fortemente na produção de energia eólica e solar, o que ajuda a atender a demanda crescente de eletricidade em áreas urbanas e rurais.</p></li>
+<li><p>Rio Grande do Norte (RN): O Rio Grande do Norte, com um aumento de 0,3 TWh para 0,5 TWh, destaca-se por seu desenvolvimento no setor de energia eólica, sendo um dos maiores produtores de energia renovável do Brasil. Além disso, o estado tem uma economia diversificada, com setores fortes em turismo e agronegócio. O turismo, especialmente nas áreas costeiras, e o crescimento da infraestrutura urbana em Natal e outras cidades aumentam a demanda energética.</p></li>
+<li><p>Sergipe (SE): Sergipe é o estado com o menor consumo de energia na região, crescendo de 0,2 TWh para 0,35 TWh entre 2004 e 2024. A economia de Sergipe é baseada no setor de serviços e na exploração de petróleo e gás, com Aracaju sendo o principal centro de demanda. O crescimento da demanda energética é influenciado pela modernização da infraestrutura urbana e pelo aumento das atividades comerciais e industriais em Aracaju e outras áreas urbanas.</p></li>
+</ul>
+</section>
+<section id="região-centro-oeste" class="level3">
+<h3 class="anchored" data-anchor-id="região-centro-oeste">Região Centro-Oeste</h3>
+<p>O Centro-Oeste registrou um aumento constante no consumo de energia, partindo de 2 TWh em 2004 para cerca de 4 TWh em 2024. A região, conhecida por sua base agrícola, teve um crescimento acelerado no consumo energético nos últimos anos, refletindo a intensificação das atividades agrícolas e o aumento da produção de commodities. Esse padrão indica que o setor rural e industrial tem impulsionado a demanda crescente por eletricidade na região.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Consumo no Centro-Oeste ####</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>consumo <span class="sc">%&gt;%</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Regiao <span class="sc">==</span> <span class="st">'Centro-Oeste'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">Consumo =</span> <span class="fu">sum</span>(Consumo),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">.by =</span> <span class="fu">c</span>(DataExcel, UF)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">DataExcel =</span> tsibble<span class="sc">::</span><span class="fu">yearmonth</span>(DataExcel)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  tsibble<span class="sc">::</span><span class="fu">as_tsibble</span>(<span class="at">index =</span> DataExcel, <span class="at">key =</span> UF) <span class="sc">%&gt;%</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  fabletools<span class="sc">::</span><span class="fu">model</span>(<span class="fu">STL</span>(Consumo)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  fabletools<span class="sc">::</span><span class="fu">components</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">DataExcel =</span> <span class="fu">as.Date</span>(DataExcel)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> DataExcel,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> Consumo,</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> UF,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">linetype =</span> <span class="st">'Original'</span>),</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">1.45</span>,</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> DataExcel,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> trend,</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> UF,</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>                <span class="at">linetype =</span> <span class="st">'Tendência'</span>),</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">1.45</span>) <span class="sc">+</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"O Crescimento Acelerado na Região Centro-Oeste"</span>,</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"da Expansão das Agrícola e Industrial"</span>,</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">''</span>,</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">''</span>,</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">'Série'</span>,</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">'Setor'</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">'2 year'</span>,</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>               <span class="at">date_labels =</span> <span class="st">'%y'</span>) <span class="sc">+</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">number_format</span>(<span class="at">suffix =</span> <span class="st">' TWh'</span>,</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>                                                    <span class="at">scale =</span> <span class="dv">1</span><span class="sc">/</span><span class="fl">1e6</span>)) <span class="sc">+</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">'longdash'</span>, <span class="st">'solid'</span>)) <span class="sc">+</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>UF, <span class="at">scales =</span> <span class="st">'free'</span>, <span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>),</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">'top'</span>) <span class="sc">+</span></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="energia_pt1_files/figure-html/grafico%20centrooeste-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<ul>
+<li><p>Distrito Federal (DF): Com uma economia concentrada em serviços, comércio e atividades administrativas, o Distrito Federal não apresenta grande variabilidade no consumo de energia, diferentemente de estados onde o agronegócio ou a indústria predominam. O consumo de energia no Distrito Federal aumentou de 0,3 TWh em 2004 para 0,6 TWh até 2014, estabilizando-se a partir desse período. Isso pode ser explicado pelo fato de Brasília ser uma cidade administrativa e de serviços, onde o crescimento populacional e econômico é mais controlado em comparação aos estados vizinhos. Entre 2015 e 2024, o gráfico mostra leves flutuações no consumo, que podem estar relacionadas a variáveis econômicas e sociais, como a crise econômica de 2015-2016 e a posterior recuperação. A economia do DF é altamente baseada em serviços, com destaque para a administração pública, o que reflete um padrão de consumo mais estável.</p></li>
+<li><p>Goiás (GO): A expansão contínua do agronegócio, a industrialização e a urbanização são os principais motores do crescimento do consumo de energia em Goiás. Além disso, o estado tem investido em energias renováveis, como a solar, para atender à crescente demanda. Goiás experimentou um crescimento notável, com o consumo subindo de 0,6 TWh para 1,5 TWh entre 2004 e 2024. Esse crescimento acentuado é impulsionado pelo agronegócio, que é uma das principais forças econômicas do estado. Goiás é um dos maiores produtores de grãos e carne bovina do Brasil, e a energia elétrica é fundamental para sustentar as operações agrícolas, indústrias de alimentos e processadoras. Cidades como Goiânia e Anápolis são polos industriais e logísticos importantes, com destaque para a indústria alimentícia e farmacêutica. O aumento da urbanização nessas cidades também demanda mais energia para atender ao crescimento populacional e à expansão da infraestrutura urbana.</p></li>
+</ul>
+<p>Fatores de Crescimento:</p>
+<ul>
+<li><p>Mato Grosso do Sul (MS): O crescimento das indústrias de alimentos, bioenergia e a expansão da infraestrutura urbana em cidades como Campo Grande são fatores que impulsionam o consumo energético no estado. O consumo de energia em Mato Grosso do Sul cresceu de 0,3 TWh para 1 TWh em 2024, um aumento expressivo que reflete o desenvolvimento acelerado do agronegócio no estado. A produção de soja, milho e carne são atividades econômicas de destaque, que exigem grande consumo de energia tanto nas fazendas quanto nas indústrias de processamento. O Mato Grosso do Sul é conhecido por suas vastas áreas agrícolas e pela pecuária extensiva, que demandam cada vez mais eletricidade para irrigação, processamento e transporte. A instalação de grandes usinas de biocombustíveis e plantas industriais no estado também aumenta a demanda energética.</p></li>
+<li><p>Mato Grosso (MT): A urbanização em cidades como Cuiabá e Rondonópolis também elevam a demanda energética, uma vez que essas cidades estão se expandindo para acomodar o crescimento populacional e o aumento da atividade econômica. Mato Grosso tem se tornado um dos principais polos de exportação agrícola do Brasil, o que intensifica a demanda por infraestrutura energética. O agronegócio em Mato Grosso é altamente mecanizado e demanda um grande volume de energia para sustentar suas operações, desde a produção agrícola até a armazenagem e o processamento dos produtos. Além disso, a crescente industrialização em setores como a produção de alimentos e o beneficiamento de commodities também contribui para o aumento do consumo. O estado de Mato Grosso apresentou um crescimento robusto, com o consumo de energia aumentando de 0,3 TWh para 1 TWh entre 2004 e 2024. Esse aumento está diretamente relacionado ao crescimento do agronegócio, sendo Mato Grosso o maior produtor de soja, milho e algodão do Brasil.</p></li>
+</ul>
+</section>
+<section id="região-sudeste" class="level3">
+<h3 class="anchored" data-anchor-id="região-sudeste">Região Sudeste</h3>
+<p>A Região Sudeste continua sendo a maior consumidora de energia elétrica no país, com seu consumo oscilando entre 16 TWh e 22 TWh entre 2004 e 2024. As oscilações observadas, especialmente entre 2016 e 2017, estão fortemente ligadas à crise econômica do país e à desaceleração industrial durante esse período. Após a estabilização entre 2014 e 2020, o consumo voltou a crescer com a retomada econômica a partir de 2021, refletindo o aumento na demanda energética pelos setores de serviços e comércio.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Consumo no Sudeste ####</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>consumo <span class="sc">%&gt;%</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Regiao <span class="sc">==</span> <span class="st">'Sudeste'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">Consumo =</span> <span class="fu">sum</span>(Consumo),</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">.by =</span> <span class="fu">c</span>(DataExcel, UF)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">DataExcel =</span> tsibble<span class="sc">::</span><span class="fu">yearmonth</span>(DataExcel)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  tsibble<span class="sc">::</span><span class="fu">as_tsibble</span>(<span class="at">index =</span> DataExcel, <span class="at">key =</span> UF) <span class="sc">%&gt;%</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  fabletools<span class="sc">::</span><span class="fu">model</span>(<span class="fu">STL</span>(Consumo)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  fabletools<span class="sc">::</span><span class="fu">components</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">DataExcel =</span> <span class="fu">as.Date</span>(DataExcel)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> DataExcel,</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> Consumo,</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> UF,</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">linetype =</span> <span class="st">'Original'</span>),</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">1.45</span>,</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> DataExcel,</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> trend,</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> UF,</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>                <span class="at">linetype =</span> <span class="st">'Tendência'</span>),</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">1.45</span>) <span class="sc">+</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"O Maior Centro Consumidor do País"</span>,</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Influenciado por Oscilações e Retomada Pós-Crise no Sudeste"</span>,</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">'Série'</span>,</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">'Setor'</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">'2 year'</span>,</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>               <span class="at">date_labels =</span> <span class="st">'%y'</span>) <span class="sc">+</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">number_format</span>(<span class="at">suffix =</span> <span class="st">' TWh'</span>,</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>                                                    <span class="at">scale =</span> <span class="dv">1</span><span class="sc">/</span><span class="fl">1e6</span>)) <span class="sc">+</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">'longdash'</span>, <span class="st">'solid'</span>)) <span class="sc">+</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>UF, <span class="at">scales =</span> <span class="st">'free'</span>, <span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>),</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">'top'</span>) <span class="sc">+</span></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="energia_pt1_files/figure-html/grafico%20sudeste-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<ul>
+<li><p>Espírito Santo (ES): As indústrias siderúrgicas e de petróleo são grandes consumidoras de energia no estado, e os altos e baixos no consumo podem estar ligados a crises nesses setores. Além disso, o crescimento da urbanização em Vitória e Vila Velha contribui para o aumento da demanda no setor residencial e comercial. O consumo de energia no Espírito Santo variou de 0,6 TWh em 2004 para 1 TWh em 2024. O gráfico mostra flutuações significativas ao longo do tempo, especialmente em torno de 2009 e 2016, refletindo a dependência do estado em setores como a indústria de petróleo e gás e a siderurgia, que sofreram com crises econômicas e quedas no preço de commodities.</p></li>
+<li><p>Minas Gerais (MG): A mineração é uma atividade predominante no estado, e o crescimento do consumo reflete a expansão desse setor, além do aumento da urbanização em cidades como Belo Horizonte. A agricultura e a agroindústria também são relevantes no aumento da demanda energética. Minas Gerais apresentou um crescimento contínuo no consumo de energia, subindo de 3,7 TWh para 5 TWh ao longo do período analisado. O estado tem uma economia diversificada, com forte presença do setor industrial, especialmente mineração, siderurgia e metalurgia, que demandam grandes volumes de eletricidade.</p></li>
+<li><p>Rio de Janeiro (RJ): O Rio de Janeiro é um centro industrial e de serviços, com grandes empresas no setor de petróleo, gás e energia. As crises econômicas, como a de 2015-2016, impactaram o consumo de energia, especialmente nas indústrias e no setor de serviços. No entanto, a recuperação pós-2017 é visível, acompanhando a retomada da economia fluminense. O consumo no Rio de Janeiro variou de 2,5 TWh em 2004 para 3,5 TWh em 2024. O gráfico mostra oscilações pronunciadas, com um pico em torno de 2015 seguido de uma queda até 2017, e posterior recuperação. Essas flutuações estão relacionadas à instabilidade econômica do estado, especialmente devido à crise fiscal e à dependência do setor de petróleo e gás.</p></li>
+<li><p>São Paulo (SP): A demanda por energia em São Paulo é impulsionada pelo setor industrial (especialmente a produção de bens duráveis e manufatura), o setor de serviços (como comércio e finanças) e o crescimento populacional. A expansão do setor de tecnologia e o aumento da infraestrutura urbana também são fatores que impulsionam o consumo. São Paulo é o estado que mais consome energia no Brasil, com o consumo variando de 8 TWh em 2004 para 13 TWh em 2024. O estado é o maior centro industrial, financeiro e comercial do país, e o aumento constante do consumo de energia reflete o crescimento contínuo de sua economia.</p></li>
+</ul>
+</section>
+<section id="região-sul" class="level3">
+<h3 class="anchored" data-anchor-id="região-sul">Região Sul</h3>
+<p>Na Região Sul, o consumo de energia passou de 5 TWh em 2004 para cerca de 9 TWh em 2024. A região, conhecida por sua forte base industrial e agrícola, manteve um padrão de crescimento linear e estável. Após 2020, o consumo aumentou consideravelmente, possivelmente devido ao crescimento das atividades agrícolas e da indústria de alimentos, setores-chave da economia sulista.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Consumo no Sul ####</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>consumo <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Regiao <span class="sc">==</span> <span class="st">'Sul'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">Consumo =</span> <span class="fu">sum</span>(Consumo),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">.by =</span> <span class="fu">c</span>(DataExcel, UF)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">DataExcel =</span> tsibble<span class="sc">::</span><span class="fu">yearmonth</span>(DataExcel)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  tsibble<span class="sc">::</span><span class="fu">as_tsibble</span>(<span class="at">index =</span> DataExcel, <span class="at">key =</span> UF) <span class="sc">%&gt;%</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  fabletools<span class="sc">::</span><span class="fu">model</span>(<span class="fu">STL</span>(Consumo)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  fabletools<span class="sc">::</span><span class="fu">components</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">DataExcel =</span> <span class="fu">as.Date</span>(DataExcel)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> DataExcel,</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> Consumo,</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> UF,</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">linetype =</span> <span class="st">'Original'</span>),</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">1.45</span>,</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> DataExcel,</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> trend,</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> UF,</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>                <span class="at">linetype =</span> <span class="st">'Tendência'</span>),</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">1.45</span>) <span class="sc">+</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"A Estabilidade Sulista"</span>,</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Indústria e Agricultura Sustentam a Demanda Energética"</span>,</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">''</span>,</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">''</span>,</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">'Série'</span>,</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">'Setor'</span>) <span class="sc">+</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">'2 year'</span>,</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>               <span class="at">date_labels =</span> <span class="st">'%y'</span>) <span class="sc">+</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">number_format</span>(<span class="at">suffix =</span> <span class="st">' TWh'</span>,</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>                                                    <span class="at">scale =</span> <span class="dv">1</span><span class="sc">/</span><span class="fl">1e6</span>)) <span class="sc">+</span></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">'longdash'</span>, <span class="st">'solid'</span>)) <span class="sc">+</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>UF, <span class="at">scales =</span> <span class="st">'free'</span>, <span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>),</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">'top'</span>) <span class="sc">+</span></span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="energia_pt1_files/figure-html/grafico%20sul-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<ul>
+<li><p>Paraná (PR): O estado tem uma economia fortemente baseada no agronegócio (produção de soja, milho e carne), além de um setor industrial significativo, especialmente em Curitiba e nas regiões metropolitanas. O crescimento contínuo no consumo de energia acompanha o aumento das atividades industriais e agrícolas, além da expansão urbana. O consumo de energia no Paraná aumentou de 1,6 TWh em 2004 para 3,5 TWh em 2024, conforme mostrado no gráfico e na tabela. O Paraná é um dos maiores estados agrícolas e industriais do país, e isso se reflete na demanda energética crescente.</p></li>
+<li><p>Rio Grande do Sul (RS): O Rio Grande do Sul possui uma economia diversificada, com forte presença da agricultura (produção de soja, arroz e trigo), além de um setor industrial relevante (indústria de alimentos, couro e calçados). A dependência de setores vulneráveis à variabilidade de preços e clima pode explicar as oscilações no consumo de energia. O gráfico do Rio Grande do Sul mostra um crescimento no consumo de energia, variando de 2 TWh em 2004 para cerca de 3 TWh em 2024, com oscilações significativas entre 2014 e 2020. Essas oscilações podem estar relacionadas a crises econômicas que afetaram a indústria gaúcha, especialmente no setor de alimentos e agricultura.</p></li>
+<li><p>Santa Catarina (SC): O estado tem uma base industrial forte, com centros como Joinville, Blumenau e Florianópolis, além de um agronegócio em expansão. O crescimento no consumo reflete o aumento das atividades industriais e urbanas, além da necessidade de infraestrutura para sustentar o crescimento populacional. O consumo de energia em Santa Catarina aumentou de 1,5 TWh para 2,5 TWh no período analisado. Santa Catarina tem uma economia diversificada, com destaque para a indústria têxtil, de alimentos, metalurgia e agronegócio, todos grandes consumidores de energia.</p></li>
+</ul>
+</section>
+</section>
+<section id="consumo-por-setores-industriais" class="level1">
+<h1>Consumo por Setores Industriais</h1>
+<p>Historicamente, o setor industrial sempre foi o maior consumidor de energia elétrica no Brasil. Em 2020, ele representou aproximadamente 37% de todo o consumo energético do país. As indústrias de mineração, siderurgia e manufatura são particularmente intensivas em energia, especialmente no estado de Minas Gerais, onde as atividades de extração e processamento de metais são predominantes.</p>
+<p>Além disso, o aumento da produção agrícola no Centro-Oeste e a expansão de indústrias ligadas ao agronegócio têm impulsionado o crescimento do consumo de energia nesse setor.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Consumo Industrial </span><span class="al">###</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>setor <span class="sc">%&gt;%</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">Consumo =</span> <span class="fu">sum</span>(Consumo),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">.by =</span> <span class="fu">c</span>(DataExcel, SetorIndustrial)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">DataExcel =</span> tsibble<span class="sc">::</span><span class="fu">yearmonth</span>(DataExcel)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  tsibble<span class="sc">::</span><span class="fu">as_tsibble</span>(<span class="at">index =</span> DataExcel, <span class="at">key =</span> SetorIndustrial) <span class="sc">%&gt;%</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  fabletools<span class="sc">::</span><span class="fu">model</span>(<span class="fu">STL</span>(Consumo)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  fabletools<span class="sc">::</span><span class="fu">components</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">DataExcel =</span> <span class="fu">as.Date</span>(DataExcel)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> DataExcel,</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> Consumo,</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> SetorIndustrial,</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">linetype =</span> <span class="st">'Original'</span>),</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">1.45</span>,</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>            <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> DataExcel,</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> trend,</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> SetorIndustrial,</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>                <span class="at">linetype =</span> <span class="st">'Tendência'</span>),</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">1.4</span>) <span class="sc">+</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">''</span>,</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">''</span>,</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">'Série'</span>,</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">'Setor'</span>) <span class="sc">+</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">'4 year'</span>,</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>               <span class="at">date_labels =</span> <span class="st">'%y'</span>) <span class="sc">+</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">number_format</span>(<span class="at">suffix =</span> <span class="st">' TWh'</span>,</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>                                                    <span class="at">scale =</span> <span class="dv">1</span><span class="sc">/</span><span class="fl">1e6</span>)) <span class="sc">+</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">'longdash'</span>, <span class="st">'solid'</span>)) <span class="sc">+</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_discrete</span>(<span class="at">guide =</span> <span class="st">'none'</span>) <span class="sc">+</span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>SetorIndustrial, <span class="at">scales =</span> <span class="st">'free'</span>,</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>             <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">labeller =</span> <span class="fu">label_wrap_gen</span>(<span class="at">width =</span> <span class="dv">40</span>)) <span class="sc">+</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>),</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">'top'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="energia_pt1_files/figure-html/grafico%20industrial-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+</section>
+<section id="referências" class="level1 unnumbered">
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">Referências</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-rmarkdown2024" class="csl-entry" role="doc-biblioentry">
+Allaire, JJ, Yihui Xie, Christophe Dervieux, Jonathan McPherson, Javier Luraschi, Kevin Ushey, Aron Atkins, et al. 2024. <em><span class="nocase">rmarkdown</span>: Dynamic Documents for r</em>. <a href="https://github.com/rstudio/rmarkdown">https://github.com/rstudio/rmarkdown</a>.
+</div>
+<div id="ref-ggthemes" class="csl-entry" role="doc-biblioentry">
+Arnold, Jeffrey B. 2024. <em><span class="nocase">ggthemes</span>: Extra Themes, Scales and Geoms for <span>“<span class="nocase">ggplot2</span>”</span></em>. <a href="https://CRAN.R-project.org/package=ggthemes">https://CRAN.R-project.org/package=ggthemes</a>.
+</div>
+<div id="ref-basedosdados" class="csl-entry" role="doc-biblioentry">
+Cavalcante, Pedro, Daniel Herszenhut, and Rodrigo Dornelles. 2023. <em><span class="nocase">basedosdados</span>: <span>“<span>Base Dos Dados</span>”</span> r Client</em>. <a href="https://CRAN.R-project.org/package=basedosdados">https://CRAN.R-project.org/package=basedosdados</a>.
+</div>
+<div id="ref-fpp3" class="csl-entry" role="doc-biblioentry">
+Hyndman, Rob. 2024. <em>Fpp3: Data for <span>“<span class="nocase">Forecasting: Principles and Practice</span>”</span> (3rd Edition)</em>. <a href="https://CRAN.R-project.org/package=fpp3">https://CRAN.R-project.org/package=fpp3</a>.
+</div>
+<div id="ref-fabletools" class="csl-entry" role="doc-biblioentry">
+O’Hara-Wild, Mitchell, Rob Hyndman, and Earo Wang. 2024. <em><span class="nocase">fabletools</span>: Core Tools for Packages in the <span>“<span class="nocase">fable</span>”</span> Framework</em>. <a href="https://CRAN.R-project.org/package=fabletools">https://CRAN.R-project.org/package=fabletools</a>.
+</div>
+<div id="ref-patchwork" class="csl-entry" role="doc-biblioentry">
+Pedersen, Thomas Lin. 2024. <em><span class="nocase">patchwork</span>: The Composer of Plots</em>. <a href="https://CRAN.R-project.org/package=patchwork">https://CRAN.R-project.org/package=patchwork</a>.
+</div>
+<div id="ref-gganimate" class="csl-entry" role="doc-biblioentry">
+Pedersen, Thomas Lin, and David Robinson. 2024. <em><span class="nocase">gganimate</span>: A Grammar of Animated Graphics</em>. <a href="https://CRAN.R-project.org/package=gganimate">https://CRAN.R-project.org/package=gganimate</a>.
+</div>
+<div id="ref-geobr" class="csl-entry" role="doc-biblioentry">
+Pereira, Rafael H. M., and Caio Nogueira Goncalves. 2024. <em><span class="nocase">geobr</span>: Download Official Spatial Data Sets of Brazil</em>. <a href="https://CRAN.R-project.org/package=geobr">https://CRAN.R-project.org/package=geobr</a>.
+</div>
+<div id="ref-prettydoc" class="csl-entry" role="doc-biblioentry">
+Qiu, Yixuan. 2021. <em><span class="nocase">prettydoc</span>: Creating Pretty Documents from r Markdown</em>. <a href="https://CRAN.R-project.org/package=prettydoc">https://CRAN.R-project.org/package=prettydoc</a>.
+</div>
+<div id="ref-base" class="csl-entry" role="doc-biblioentry">
+R Core Team. 2024. <em><span>R</span>: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.
+</div>
+<div id="ref-tsibble" class="csl-entry" role="doc-biblioentry">
+Wang, Earo, Dianne Cook, and Rob J Hyndman. 2020. <span>“A New Tidy Data Structure to Support Exploration and Modeling of Temporal Data.”</span> <em>Journal of Computational and Graphical Statistics</em> 29 (3): 466–78. <a href="https://doi.org/10.1080/10618600.2019.1695624">https://doi.org/10.1080/10618600.2019.1695624</a>.
+</div>
+<div id="ref-tidyverse" class="csl-entry" role="doc-biblioentry">
+Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino McGowan, Romain François, Garrett Grolemund, et al. 2019. <span>“Welcome to the <span class="nocase">tidyverse</span>.”</span> <em>Journal of Open Source Software</em> 4 (43): 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.
+</div>
+<div id="ref-scales" class="csl-entry" role="doc-biblioentry">
+Wickham, Hadley, Thomas Lin Pedersen, and Dana Seidel. 2023. <em><span class="nocase">scales</span>: Scale Functions for Visualization</em>. <a href="https://CRAN.R-project.org/package=scales">https://CRAN.R-project.org/package=scales</a>.
+</div>
+<div id="ref-knitr2014" class="csl-entry" role="doc-biblioentry">
+Xie, Yihui. 2014. <span>“<span class="nocase">knitr</span>: A Comprehensive Tool for Reproducible Research in <span>R</span>.”</span> In <em>Implementing Reproducible Computational Research</em>, edited by Victoria Stodden, Friedrich Leisch, and Roger D. Peng. Chapman; Hall/CRC.
+</div>
+<div id="ref-knitr2015" class="csl-entry" role="doc-biblioentry">
+———. 2015. <em>Dynamic Documents with <span>R</span> and Knitr</em>. 2nd ed. Boca Raton, Florida: Chapman; Hall/CRC. <a href="https://yihui.org/knitr/">https://yihui.org/knitr/</a>.
+</div>
+<div id="ref-knitr2024" class="csl-entry" role="doc-biblioentry">
+———. 2024. <em><span class="nocase">knitr</span>: A General-Purpose Package for Dynamic Report Generation in r</em>. <a href="https://yihui.org/knitr/">https://yihui.org/knitr/</a>.
+</div>
+<div id="ref-rmarkdown2018" class="csl-entry" role="doc-biblioentry">
+Xie, Yihui, J. J. Allaire, and Garrett Grolemund. 2018. <em>R Markdown: The Definitive Guide</em>. Boca Raton, Florida: Chapman; Hall/CRC. <a href="https://bookdown.org/yihui/rmarkdown">https://bookdown.org/yihui/rmarkdown</a>.
+</div>
+<div id="ref-rmarkdown2020" class="csl-entry" role="doc-biblioentry">
+Xie, Yihui, Christophe Dervieux, and Emily Riederer. 2020. <em>R Markdown Cookbook</em>. Boca Raton, Florida: Chapman; Hall/CRC. <a href="https://bookdown.org/yihui/rmarkdown-cookbook">https://bookdown.org/yihui/rmarkdown-cookbook</a>.
+</div>
+</div></section></div></main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

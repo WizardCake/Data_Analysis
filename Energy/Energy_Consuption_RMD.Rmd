@@ -1,18 +1,39 @@
 ---
-title: "Análise da Geração, Consumo e Consumidores"
-subtitle: 'de Energia Elétrica no Brasil'
+title: "Geração, Consumo e Consumidores de Energia Elétrica no Brasil"
+subtitle: 'Parte 1: O Consumo'
 date: "`r Sys.Date()`"
 bibliography: grateful-refs.bib
 output:
   prettydoc::html_pretty:
     theme: architect
     highlight: github
-    includes:
-      in_header: fonts.html
 ---
 
+```{css echo=FALSE}
+
+body {
+  background-color: #f8f1f5; 
+}
+
+p {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14pt;
+  text-align: justify;
+}
+
+pre code {
+  font-family: 'Fira Code';
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Roboto&display=swap');
+```
+
+
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
 ```
 
 # Introdução
@@ -88,7 +109,9 @@ consumo %>%
                 y = trend,
                 linetype = 'Tendencia'),
             linewidth = 1.45) +
-  labs(x = element_blank(),
+  labs(title = "A Crescente Tendência da Demanda Energética",
+       subtitle = "e as Recessão e Pandemia como seus Freios",
+       x = element_blank(),
        y = element_blank(),
        linetype = 'Serie',
        color = 'Setor') +
@@ -142,7 +165,9 @@ consumo %>%
                 color = Classe,
                 linetype = 'Tendencia'),
             linewidth = 1.45) +
-  labs(x = element_blank(),
+  labs(title = "As Distintas Dinâmicas das Classes no Brasil",
+       subtitle = "o Crescimento Contra a Volatilidade em duas décadas",
+       x = element_blank(),
        y = element_blank(),
        linetype = 'Serie',
        color = 'Setor') +
@@ -205,7 +230,9 @@ consumo %>%
                 color = Regiao,
                 linetype = 'Tendência'),
             linewidth = 1.45) +
-  labs(x = element_blank(),
+  labs(title = "Os Padrões Regionais no Brasil",
+       subtitle = "e as Variações Econômicas e Sociais Locais",
+       x = element_blank(),
        y = element_blank(),
        linetype = 'Série',
        color = 'Região') +
@@ -224,7 +251,7 @@ consumo %>%
 ### Região Norte:
 A Região Norte experimentou um crescimento contínuo no consumo de energia, partindo de 1,5 TWh em 2004 e atingindo 3,5 TWh em 2024. Esse crescimento está fortemente associado à expansão da infraestrutura, maior urbanização e aumento das atividades industriais. O crescimento da tendência, especialmente após 2018, sugere que a industrialização e os projetos de mineração podem ter um papel importante na demanda crescente por energia elétrica na região.
 
-```{r fig.height=8, fig.width=10}
+```{r fig.height=9, fig.width=10}
 ### Consumo no Norte ####
 consumo %>% 
   dplyr::filter(Regiao == 'Norte') %>% 
@@ -247,7 +274,9 @@ consumo %>%
                 color = UF,
                 linetype = 'Tendência'),
             linewidth = 1.45) +
-  labs(x = element_blank(),
+  labs(title = "O Contínuo Avanço na Região Norte",
+       subtitle = "da Expansão da Infraestrutura a Industrialização",
+       x = element_blank(),
        y = element_blank(),
        linetype = 'Série',
        color = 'Setor') +
@@ -258,7 +287,7 @@ consumo %>%
   scale_linetype_manual(values = c('longdash', 'solid')) +
   facet_wrap(~UF, scales = 'free', ncol = 2) +
   theme_minimal() +
-  theme(text = element_text(size = 18),
+  theme(text = element_text(size = 16),
         legend.position = 'top') +
     guides(color = "none")
 ```
@@ -304,7 +333,9 @@ consumo %>%
                 color = UF,
                 linetype = 'Tendência'),
             linewidth = 1.45) +
-  labs(x = element_blank(),
+  labs(title ="O Crescimento Estável Nordestino",
+       subtitle = "do Desenvolvimento Urbano e Expansão da Infraestrutura",
+       x = element_blank(),
        y = element_blank(),
        linetype = 'Série',
        color = 'Setor') +
@@ -315,7 +346,7 @@ consumo %>%
   scale_linetype_manual(values = c('longdash', 'solid')) +
   facet_wrap(~UF, scales = 'free', ncol = 2) +
   theme_minimal() +
-  theme(text = element_text(size = 17),
+  theme(text = element_text(size = 15),
         legend.position = 'top') +
     guides(color = "none")
 ```
@@ -364,7 +395,9 @@ consumo %>%
                 color = UF,
                 linetype = 'Tendência'),
             linewidth = 1.45) +
-  labs(x = element_blank(),
+  labs(title = "O Crescimento Acelerado na Região Centro-Oeste",
+       subtitle = "da Expansão das Agrícola e Industrial",
+       x = element_blank(),
        y = element_blank(),
        linetype = 'Série',
        color = 'Setor') +
@@ -416,7 +449,9 @@ consumo %>%
                 color = UF,
                 linetype = 'Tendência'),
             linewidth = 1.45) +
-  labs(x = element_blank(),
+  labs(title = "O Maior Centro Consumidor do País",
+       subtitle = "Influenciado por Oscilações e Retomada Pós-Crise no Sudeste",
+       x = element_blank(),
        y = element_blank(),
        linetype = 'Série',
        color = 'Setor') +
@@ -466,7 +501,9 @@ consumo %>%
                 color = UF,
                 linetype = 'Tendência'),
             linewidth = 1.45) +
-  labs(x = element_blank(),
+  labs(title = "A Estabilidade Sulista",
+       subtitle = "Indústria e Agricultura Sustentam a Demanda Energética",
+       x = element_blank(),
        y = element_blank(),
        linetype = 'Série',
        color = 'Setor') +
@@ -489,8 +526,8 @@ consumo %>%
 * Santa Catarina (SC): O estado tem uma base industrial forte, com centros como Joinville, Blumenau e Florianópolis, além de um agronegócio em expansão. O crescimento no consumo reflete o aumento das atividades industriais e urbanas, além da necessidade de infraestrutura para sustentar o crescimento populacional. O consumo de energia em Santa Catarina aumentou de 1,5 TWh para 2,5 TWh no período analisado. Santa Catarina tem uma economia diversificada, com destaque para a indústria têxtil, de alimentos, metalurgia e agronegócio, todos grandes consumidores de energia.
 
 
-# Consumo por Setores
-Setor Industrial: O Motor do Consumo
+# Consumo por Setores Industriais
+
 Historicamente, o setor industrial sempre foi o maior consumidor de energia elétrica no Brasil. Em 2020, ele representou aproximadamente 37% de todo o consumo energético do país. As indústrias de mineração, siderurgia e manufatura são particularmente intensivas em energia, especialmente no estado de Minas Gerais, onde as atividades de extração e processamento de metais são predominantes.
 
 Além disso, o aumento da produção agrícola no Centro-Oeste e a expansão de indústrias ligadas ao agronegócio têm impulsionado o crescimento do consumo de energia nesse setor.
@@ -516,11 +553,13 @@ setor %>%
                 color = SetorIndustrial,
                 linetype = 'Tendência'),
             linewidth = 1.4) +
-  labs(x = element_blank(),
+  labs(title = "O Industrial Brasileiro: Uma Visão por Segmento",
+       subtitle = "Liderados pela mineração, siderurgia e agronegócio",
+       x = element_blank(),
        y = element_blank(),
        linetype = 'Série',
        color = 'Setor') +
-  scale_x_date(date_breaks = '4 year',
+  scale_x_date(date_breaks = '2 year',
                date_labels = '%y') +
   scale_y_continuous(labels = scales::number_format(suffix = ' TWh',
                                                     scale = 1/1e6)) +
@@ -534,75 +573,25 @@ setor %>%
         legend.position = 'top')
 ```
 
+* Extração de Minerais Metálicos: Observa-se uma linha de tendência suavemente ascendente, esse aumento pode estar ligado à expansão da atividade de mineração em resposta à demanda por metais tanto no mercado doméstico quanto internacional. A extração de minerais metálicos é dependente de preços de commodities e demanda global. A tendência ascendente indica crescimento na atividade de mineração, possivelmente alimentada por demanda de indústrias como construção e tecnologia.
 
-# Setor Residencial: Crescimento e Urbanização
-O setor residencial tem mostrado um crescimento constante, impulsionado pelo aumento da população urbana e pela maior utilização de aparelhos eletrônicos e eletrodomésticos. O número de consumidores conectados à rede elétrica aumentou significativamente nos últimos 10 anos, com mais de 80% das residências brasileiras equipadas com eletrodomésticos que demandam uma quantidade considerável de eletricidade, como ar-condicionado e eletrodomésticos de cozinha.
+* Fabricação de Produtos Alimentícios: A linha de tendência é fortemente ascendente e bem definida, o que reflete uma demanda crescente e sustentada por energia ao longo dos anos. Esse setor é sensível ao crescimento populacional e à expansão do mercado alimentício. A crescente demanda de energia pode ser atribuída à industrialização do processamento de alimentos e ao aumento na produção de bens alimentares processados. Além disso, o aumento da exportação de alimentos também pode justificar o aumento de consumo energético.
 
+* Fabricação de Produtos Têxteis: A tendência é moderadamente ascendente, porém estável, indicando que a demanda energética permanece constante com pequenas variações. A indústria têxtil é suscetível a flutuações econômicas e mudanças no consumo, mas o padrão estável sugere uma demanda relativamente consolidada. Pequenos aumentos podem refletir investimentos em tecnologia ou aumentos ocasionais na produção.
 
-```{r fig.height=8, fig.width=10}
-# Pipeline para processar a média dos dados estado x classe e plotar
-consumo %>%
-  dplyr::summarise(Consumo = sum(Consumo),
-                   .by = c(DataExcel, Classe, UF)) %>%
-  tidyr::pivot_wider(names_from = Classe,
-                     values_from = Consumo) %>%
-  dplyr::rowwise() %>%
-  dplyr::mutate(Total = sum(Comercial, Industrial, Outros, Residencial, Rural,
-                            na.rm = TRUE),
-                across(c(Comercial:Rural), ~ .x / Total)) %>%
-  dplyr::ungroup() %>%
-  tidyr::pivot_longer(cols = c(Comercial:Rural)) %>%
-  dplyr::right_join(estados, by = c('UF' = 'abbrev_state')) %>%
-  dplyr::mutate(name = factor(name,
-                              levels = c("Residencial",
-                                         "Industrial",
-                                         "Comercial",
-                                         "Rural",
-                                         "Outros")),
-                name_region = factor(name_region,
-                                     levels = c("Norte",
-                                                "Nordeste",
-                                                "Centro Oeste",
-                                                "Sudeste",
-                                                "Sul"))) %>%
-  dplyr::mutate(mean_value = mean(value,
-                                  na.rm = TRUE),
-                DataExcel = as.Date(DataExcel),
-                .by = c(DataExcel, name_region, name)) %>% 
-  dplyr::select(DataExcel, UF, name, name_region, value, mean_value) %>% 
-  ggplot() +
-  aes(x = DataExcel) +
-  geom_line(aes(y = value,
-                color = UF),
-            size = 0.75,
-            alpha = 0.4,
-            show.legend = F) +
-  geom_line(aes(y = mean_value), 
-            color = "black",
-            size = 1,
-            show.legend = F) + 
-  labs(x = '',
-       y = '') +
-  facet_grid(name ~ name_region,
-             scales = 'free') +
-  theme_clean() +
-  theme(axis.text = element_text(size = 12),
-        strip.text = element_text(size = 18),
-        panel.spacing = unit(2, "lines"))
-```
+* Fabricação de Celulose, Papel e Produtos de Papel:  A linha de tendência tem uma clara inclinação ascendente, indicando um crescimento constante e significativo no consumo de energia. O setor de papel e celulose se beneficia de uma demanda crescente por embalagens de papel, impulsionada pela expansão do e-commerce e pela preferência por embalagens sustentáveis. A tendência de alta reflete a expansão na capacidade produtiva para atender a essa demanda crescente.
 
-# Impactos das Energias Renováveis e Eficiência Energética
+* Fabricação de Produtos Químicos:  A linha de tendência mostra uma leve inclinação, mas o consumo é relativamente estável, com pequenas variações.  O setor químico é grande e diversificado, abrangendo produtos como fertilizantes, produtos farmacêuticos e petroquímicos. A estabilidade sugere que o consumo é impulsionado por uma demanda constante, com pouca variação de crescimento, o que pode indicar um setor maduro com foco em eficiência e controle de custos.
 
-## A Transição para Energias Renováveis
-Nos últimos anos, o Brasil tem dado passos significativos rumo a uma matriz energética mais limpa. Com um potencial natural abundante para a geração de energia solar e eólica, o país já é um dos líderes globais nesse setor. Em estados como Bahia e Ceará, a produção de energia eólica já responde por mais de 20% da oferta energética, e os investimentos em energia solar têm se multiplicado.
+* Fabricação de Produtos de Borracha e Material Plástico: A tendência é ascendente, o que indica uma demanda crescente por energia. Esse setor é influenciado pela produção de plásticos e borracha para embalagens, automóveis e construção. O crescimento reflete o aumento do uso desses materiais, especialmente no contexto da expansão de setores como o automotivo e o de construção civil.
 
-## Eficiência Energética: Um Desafio Pendente
-Embora haja avanços em termos de geração de energia renovável, ainda existe um longo caminho a ser percorrido no que se refere à eficiência energética. O desperdício de energia nas redes de transmissão e o uso ineficiente em setores industriais e residenciais representam grandes desafios. O governo brasileiro já lançou alguns programas de incentivo à eficiência energética, mas sua implementação enfrenta obstáculos em regiões com menos infraestrutura.
+* Fabricação de Produtos de Minerais Não-Metálicos: A linha de tendência apresenta leve inclinação positiva, com uma estabilidade cíclica. Esse setor engloba produtos como cimento e cerâmica, que estão diretamente ligados à construção civil. O comportamento cíclico sugere uma influência de fatores sazonais, como o impacto de períodos de alta na construção. A leve alta na tendência reflete o crescimento do setor de construção e infraestrutura.
 
-# Projeções Futuras e Desafios
-À medida que o Brasil continua a crescer, a demanda por energia elétrica deve seguir aumentando, especialmente nas regiões Norte e Nordeste, que estão experimentando um boom de infraestrutura. Estima-se que, até 2030, a demanda nacional por eletricidade crescerá cerca de 25%, colocando pressão sobre o sistema energético nacional.
+* Metalurgia: A linha de tendência é inicialmente descendente, mas se estabiliza nos últimos anos, com uma leve recuperação. A metalurgia é extremamente sensível a ciclos econômicos e a demanda por metais básicos e aço. A queda inicial pode ter sido causada por crises econômicas ou mudanças na demanda global, enquanto a estabilização recente indica um setor que pode ter encontrado equilíbrio após uma desaceleração.
 
-Além disso, a dependência do Brasil em hidrelétricas, que representam mais de 60% da matriz energética, torna o país vulnerável a crises hídricas, como a que ocorreu em 2021. A diversificação da matriz energética, com um foco maior em fontes renováveis e melhorias na eficiência energética, será essencial para garantir a segurança energética no futuro.
+* Fabricação de Produtos de Metal, exceto Máquinas e Equipamentos:  A tendência é quase estável, com pequenas variações. Esse setor inclui a produção de metais processados que são usados em diversas indústrias. A estabilidade indica que esse mercado tem uma demanda sólida e constante, sem expansão agressiva, o que pode refletir a maturidade desse segmento e o equilíbrio entre oferta e demanda.
 
-# Conclusão
-Este relatório revela que o consumo de energia no Brasil está profundamente ligado às dinâmicas econômicas e regionais do país. Enquanto o Sudeste continua sendo o principal consumidor de eletricidade, regiões como o Norte e Nordeste estão emergindo como novos polos de demanda e geração de energia, especialmente no campo das renováveis. O desafio para o futuro será equilibrar o crescimento da demanda com a necessidade de uma matriz energética sustentável e resiliente. Políticas públicas que incentivem a eficiência energética e a adoção de fontes limpas serão cruciais para o sucesso desse processo.
+* Fabricação de Veículos Automotores, Reboques e Carrocerias:  A tendência inicial é ligeiramente descendente, com uma leve recuperação e estabilização nos anos mais recentes. A indústria automotiva tem passado por várias mudanças, incluindo crise econômica, avanços tecnológicos, e eficiência energética. A queda inicial no consumo energético pode refletir uma desaceleração na produção devido a crises ou à transição para veículos mais eficientes. A estabilização sugere uma recuperação parcial ou adaptação do setor às novas demandas de mercado.
+
+# Referências
+
