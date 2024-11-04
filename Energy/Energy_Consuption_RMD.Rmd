@@ -7,6 +7,8 @@ output:
   prettydoc::html_pretty:
     theme: architect
     highlight: github
+    toc: true
+toc-title: "Sumário"
 ---
 
 ```{css echo=FALSE}
@@ -33,7 +35,10 @@ pre code {
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,
                       warning = FALSE,
-                      message = FALSE)
+                      message = FALSE,
+                      dev = 'svg',
+                      fig.width = 15, fig.height = 9)
+library(svglite)
 ```
 
 # Introdução
@@ -89,7 +94,7 @@ estados <- geobr::read_state()
 # Padrões de Consumo ao Longo do Tempo
 Nos últimos 20 anos, o consumo de energia elétrica no Brasil tem mostrado uma tendência de crescimento consistente, embora marcada por alguns eventos críticos que geraram flutuações. Essa trajetória de longo prazo reflete o desenvolvimento econômico do país, a expansão populacional e o aumento da urbanização, além de uma maior eletrificação dos setores produtivos e das residências. No entanto, ao longo desse período, crises econômicas e políticas, como a recessão de 2014-2016 e os efeitos da pandemia de COVID-19 em 2020, geraram quedas pontuais no consumo, destacando a sensibilidade do setor energético às condições econômicas e sociais.
 
-```{r fig.height=6, fig.width=10}
+```{r}
 ### Consumo Total ####
 consumo %>% 
   dplyr::summarise(Consumo = sum(Consumo),
@@ -137,7 +142,7 @@ Já a pandemia de COVID-19, em 2020, provocou uma nova contração na demanda de
 
 Ao analisar o consumo de energia elétrica no Brasil ao longo dos últimos 20 anos, percebe-se um comportamento distinto entre os diferentes setores econômicos. Cada segmento — comercial, industrial, residencial, rural e outros — apresenta dinâmicas próprias, moldadas por fatores econômicos, sociais e estruturais.
 
-```{r fig.height=8, fig.width=10}
+```{r}
 ### Consumo por Classe ####
 consumo %>% 
   dplyr::summarise(Consumo = sum(Consumo),
@@ -202,7 +207,7 @@ O setor denominado "Outros" agrupa atividades que não se enquadram nos principa
 # Diferenças Regionais no Consumo
 O Brasil é um país com grande variedade regional, e isso se reflete nos padrões de consumo de energia elétrica. Cada região possui suas próprias características econômicas, sociais e geográficas que influenciam diretamente a demanda por eletricidade. Ao longo das últimas duas décadas, o país como um todo experimentou um crescimento consistente no consumo energético, impulsionado pelo desenvolvimento econômico, expansão da infraestrutura e aumento populacional. No entanto, as oscilações no consumo são evidentes em certos períodos, especialmente em 2020, quando os efeitos da pandemia de COVID-19 impactaram fortemente a atividade econômica e, consequentemente, o consumo de energia. As regiões apresentam padrões distintos de consumo, com crescimento mais acentuado em algumas áreas, refletindo mudanças no desenvolvimento e industrialização. 
 
-```{r fig.height=8, fig.width=10}
+```{r}
 ### Consumo Regionais ####
 consumo %>% 
   dplyr::summarise(Consumo = sum(Consumo),
@@ -251,7 +256,7 @@ consumo %>%
 ### Região Norte:
 A Região Norte experimentou um crescimento contínuo no consumo de energia, partindo de 1,5 TWh em 2004 e atingindo 3,5 TWh em 2024. Esse crescimento está fortemente associado à expansão da infraestrutura, maior urbanização e aumento das atividades industriais. O crescimento da tendência, especialmente após 2018, sugere que a industrialização e os projetos de mineração podem ter um papel importante na demanda crescente por energia elétrica na região.
 
-```{r fig.height=9, fig.width=10}
+```{r}
 ### Consumo no Norte ####
 consumo %>% 
   dplyr::filter(Regiao == 'Norte') %>% 
@@ -310,7 +315,7 @@ consumo %>%
 
 Na Região Nordeste, o consumo de energia seguiu um padrão de crescimento linear bastante estável. Em 2004, o consumo era de 4 TWh, atingindo 8 TWh em 2024. Esse aumento reflete o progresso econômico regional, que inclui a expansão de áreas urbanas e a implementação de programas de eletrificação rural. A recente aceleração entre 2021 e 2024 sugere o crescimento das atividades industriais e comerciais, com o avanço da infraestrutura regional.
 
-```{r fig.height=8, fig.width=10}
+```{r}
 ### Consumo no Nordeste ####
 consumo %>% 
   dplyr::filter(Regiao == 'Nordeste') %>% 
@@ -372,7 +377,7 @@ consumo %>%
 ### Região Centro-Oeste
 O Centro-Oeste registrou um aumento constante no consumo de energia, partindo de 2 TWh em 2004 para cerca de 4 TWh em 2024. A região, conhecida por sua base agrícola, teve um crescimento acelerado no consumo energético nos últimos anos, refletindo a intensificação das atividades agrícolas e o aumento da produção de commodities. Esse padrão indica que o setor rural e industrial tem impulsionado a demanda crescente por eletricidade na região.
 
-```{r fig.height=8, fig.width=10}
+```{r}
 ### Consumo no Centro-Oeste ####
 consumo %>% 
   dplyr::filter(Regiao == 'Centro-Oeste') %>% 
@@ -426,7 +431,7 @@ Fatores de Crescimento:
 ### Região Sudeste
 A Região Sudeste continua sendo a maior consumidora de energia elétrica no país, com seu consumo oscilando entre 16 TWh e 22 TWh entre 2004 e 2024. As oscilações observadas, especialmente entre 2016 e 2017, estão fortemente ligadas à crise econômica do país e à desaceleração industrial durante esse período. Após a estabilização entre 2014 e 2020, o consumo voltou a crescer com a retomada econômica a partir de 2021, refletindo o aumento na demanda energética pelos setores de serviços e comércio.
 
-```{r fig.height=8, fig.width=10}
+```{r}
 ### Consumo no Sudeste ####
 consumo %>% 
   dplyr::filter(Regiao == 'Sudeste') %>% 
@@ -478,7 +483,7 @@ consumo %>%
 ### Região Sul
 Na Região Sul, o consumo de energia passou de 5 TWh em 2004 para cerca de 9 TWh em 2024. A região, conhecida por sua forte base industrial e agrícola, manteve um padrão de crescimento linear e estável. Após 2020, o consumo aumentou consideravelmente, possivelmente devido ao crescimento das atividades agrícolas e da indústria de alimentos, setores-chave da economia sulista.
 
-```{r fig.height=8, fig.width=10}
+```{r}
 ### Consumo no Sul ####
 consumo %>% 
   dplyr::filter(Regiao == 'Sul') %>% 
@@ -532,7 +537,7 @@ Historicamente, o setor industrial sempre foi o maior consumidor de energia elé
 
 Além disso, o aumento da produção agrícola no Centro-Oeste e a expansão de indústrias ligadas ao agronegócio têm impulsionado o crescimento do consumo de energia nesse setor.
 
-```{r fig.height=10, fig.width=10}
+```{r}
 setor %>% 
   dplyr::summarise(Consumo = sum(Consumo),
                    .by = c(DataExcel, SetorIndustrial)) %>% 

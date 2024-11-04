@@ -7,7 +7,9 @@ output:
   prettydoc::html_pretty:
   theme: architect
   highlight: github
-
+format:
+  html:
+    embed-resources: true
 ---
 
 ```{css estilo, echo=FALSE}
