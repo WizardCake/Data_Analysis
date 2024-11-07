@@ -1,0 +1,111 @@
+---
+title: "Geração, Consumo e Consumidores de Energia Elétrica no Brasil"
+subtitle: 'Parte 2: Os Consumidores'
+date: "`r Sys.Date()`"
+bibliography: grateful-refs.bib
+format:
+  html:
+    theme: united
+    embed-resources: true
+    toc: true
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    page-layout: full
+fig-format: svg
+knitr:
+  opts_chunk: 
+    dev: "svglite"
+---
+
+```{css estilo, echo=FALSE}
+
+body {
+
+background-color: #f8f1f5;
+
+}
+
+p {
+
+font-family: 'Roboto', sans-serif;
+
+font-size: 14pt;
+
+text-align: justify;
+
+}
+
+pre code {
+
+font-family: 'Fira Code';
+
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
+
+```
+
+# Introdução
+
+Introdução
+
+O Brasil, como uma das maiores economias da América Latina, apresenta um panorama diversificado e complexo de consumo energético, essencial para o crescimento econômico sustentado e o desenvolvimento social do país. Compreender os padrões e os motores do consumo de energia em seu vasto espectro geográfico e socioeconômico é fundamental para formuladores de políticas, empresas e partes interessadas que buscam otimizar a distribuição de energia, melhorar a eficiência e promover práticas sustentáveis.
+
+Este relatório explora as complexidades do consumo energético brasileiro por meio da análise de dados abrangentes que cobrem várias dimensões, incluindo a distribuição regional, os sistemas de energia, as classes de consumidores e os tipos de consumidores. O conjunto de dados abrange informações de vários estados (UF) em diferentes regiões, como Norte, Nordeste e Sudeste/Centro-Oeste, proporcionando uma visão detalhada de como a demanda de energia varia geograficamente. Ele diferencia entre sistemas de energia distintos, como os "Sistemas Isolados" e o "Norte Interligado", destacando as diferenças e os desafios infraestruturais na distribuição de energia entre áreas remotas e urbanizadas.
+
+Além disso, a análise categoriza os consumidores em classes como Comercial, Industrial, Residencial e Rural, oferecendo insights sobre a distribuição setorial do consumo de energia. A diferenciação entre consumidores "Cativo" e "Livre" revela as dinâmicas de participação no mercado de energia, onde consumidores cativos estão geralmente vinculados a provedores específicos de energia, enquanto consumidores livres têm a flexibilidade de escolher seus fornecedores, refletindo o nível de liberalização e competição do mercado.
+
+Ao examinar o número de consumidores em cada categoria e sistema, este relatório busca identificar tendências, áreas-chave de demanda energética e avaliar a eficácia dos atuais modelos de distribuição de energia. Tal análise é crucial para informar decisões estratégicas relacionadas à política energética, investimentos em infraestrutura e a transição para sistemas energéticos mais sustentáveis e resilientes no Brasil.
+
+Por meio dessa abordagem abrangente e orientada por dados, o relatório não apenas mapeia o estado atual do consumo de energia no Brasil, mas também fornece uma base para prever demandas futuras e traçar intervenções que estejam alinhadas com os objetivos econômicos e ambientais do país.
+
+## Objetivos
+
+O objetivo principal deste relatório é conduzir uma análise abrangente dos padrões de consumo de energia no Brasil, utilizando dados recentes para informar as partes interessadas sobre o estado atual e as tendências futuras do cenário energético do país. Especificamente, o relatório busca atingir os seguintes objetivos:
+
+* Analisar Padrões de Consumo em Nível Regional e Estadual:
+
+    Examinar o consumo de energia nas diferentes regiões do Brasil (e.g., Norte, Nordeste, Sudeste/Centro-Oeste) e nos estados individuais (Unidades Federativas - UF) para identificar disparidades geográficas e dependências regionais.
+
+* Avaliar a Distribuição dos Sistemas Energéticos
+
+    Analisar a prevalência e distribuição de diversos sistemas energéticos, como Sistemas Isolados e Norte Interligado, para compreender o grau de integração da infraestrutura energética e a dependência de soluções isoladas em diferentes áreas.
+
+* Investigar Tendências de Consumo Setorial
+
+    Analisar o consumo de energia em diferentes setores, incluindo Comercial, Industrial, Residencial, Rural e Outros, para identificar quais setores são os principais impulsionadores da demanda de energia e como eles contribuem para o consumo geral.
+
+* Examinar Tipos de Consumidores e Dinâmicas de Mercado
+
+    Diferenciar entre consumidores Cativos e Livres para explorar o impacto dos marcos regulatórios e da liberalização do mercado nas escolhas dos consumidores e no acesso à energia.
+
+* dentificar Fatores-Chave e Influenciadores
+
+    Utilizar visualização de dados e análise estatística para descobrir os principais fatores que influenciam o consumo de energia, como condições socioeconômicas, características geográficas e medidas de políticas públicas.
+
+
+Ao alcançar esses objetivos, o relatório busca fornecer uma compreensão detalhada e precisa das dinâmicas de consumo de energia no Brasil. Isso, por sua vez, apoiará a tomada de decisões informadas e contribuirá para o desenvolvimento de estratégias voltadas para fomentar um futuro energético sustentável e eficiente para o país.
+
+```{r baixar dados, results='hide'}
+
+# Baixar o arquivo temporariamente
+
+url <- "https://www.epe.gov.br/sites-pt/publicacoes-dados-abertos/dados-abertos/Documents/Dados_abertos_Consumo_Mensal.xlsx"
+
+temp_file <- base::tempfile(fileext = ".xlsx")
+
+# Download do arquivo
+
+httr::GET(url, httr::write_disk(temp_file, overwrite = TRUE))
+
+# Ler o arquivo Excel
+
+consumo <- readxl::read_excel(temp_file, sheet = 2)
+
+setor <- readxl::read_excel(temp_file, sheet = 3)
+
+# --- Estados ---
+
+estados <- geobr::read_state()
+```

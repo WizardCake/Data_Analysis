@@ -3,13 +3,19 @@ title: "Geração, Consumo e Consumidores de Energia Elétrica no Brasil"
 subtitle: 'Parte 1: O Consumo'
 date: "`r Sys.Date()`"
 bibliography: grateful-refs.bib
-output:
-  prettydoc::html_pretty:
-  theme: architect
-  highlight: github
 format:
   html:
+    theme: united
     embed-resources: true
+    toc: true
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    page-layout: full
+fig-format: svg
+knitr:
+  opts_chunk: 
+    dev: "svglite"
 ---
 
 ```{css estilo, echo=FALSE}
