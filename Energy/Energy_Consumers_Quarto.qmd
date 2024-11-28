@@ -87,7 +87,28 @@ O objetivo principal deste relatório é conduzir uma análise abrangente dos pa
 
 Ao alcançar esses objetivos, o relatório busca fornecer uma compreensão detalhada e precisa das dinâmicas de consumo de energia no Brasil. Isso, por sua vez, apoiará a tomada de decisões informadas e contribuirá para o desenvolvimento de estratégias voltadas para fomentar um futuro energético sustentável e eficiente para o país.
 
-```{r baixar dados, results='hide'}
+## Pacotes Utilizados
+
+```{r pacotes, include=FALSE}
+library(tidyverse)
+library(ggthemes)
+library(fpp3)
+library(httr)
+library(readxl)
+library(tsibble)
+library(patchwork)
+library(gganimate)
+library(grateful)
+```
+
+```{r gratidão, echo=FALSE}
+pkgs <- cite_packages(output = "table", out.dir = ".", include.RStudio = FALSE)
+knitr::kable(pkgs)
+```
+
+## Dados Utilizados
+
+```{r baixar dados, results = "hide", message=FALSE, warning=FALSE}
 
 # Baixar o arquivo temporariamente
 
@@ -108,4 +129,76 @@ setor <- readxl::read_excel(temp_file, sheet = 3)
 # --- Estados ---
 
 estados <- geobr::read_state()
+
 ```
+
+
+# Padrões dos Consumidores ao Longo do Tempo
+
+Nos últimos 20 anos, o consumo de energia elétrica no Brasil tem mostrado uma tendência de crescimento consistente, reflexo do aumento populacional, da ampliação da infraestrutura elétrica e da inclusão de novos consumidores ao sistema. A curva apresenta, entre 2004 e 2024, o avançp de 53,3 milhões para 93,6 milhões, um acumulado de cerca de 75,6%. No entanto, períodos específicos, como o intervalo entre 2010 e 2015, mostram um crescimento mais acelerado, possivelmente relacionado a políticas públicas de expansão energética. Após 2015, o ritmo de crescimento apresenta uma desaceleração, acompanhando o contexto da crise econômica brasileira.
+
+```{r grafico total,fig.height=6, fig.width=10}
+
+### Consumo Total ####
+
+consumo %>%
+  dplyr::summarise(Consumidores = sum(Consumidores),
+                   .by = c(DataExcel)) %>% 
+  ggplot() +
+  geom_line(aes(x = DataExcel,
+                y = Consumidores),
+            linewidth = 1.45) +
+  labs(
+    title = "",
+    subtitle = "",
+    x = '',
+    y = ''
+  ) +
+  scale_x_datetime(date_breaks = '2 year',
+                   date_labels = '%y') +
+  scale_y_continuous(labels = scales::number_format(suffix = ' mi',
+                                                    scale = 1 / 1e6)) +
+  theme_minimal() +
+  theme(text = element_text(size = 18),
+        legend.position = 'top',
+        legend.text = element_text(size = 16))
+
+```
+
+# Dos Cativos aos Livres
+
+O mercado cativo, representado pela maior parte dos consumidores, mantém um crescimento constante ao longo do período analisado (2004-2024), passando de cerca de 53 milhões para mais de 93 milhões de consumidores. Este mercado, que engloba consumidores residenciais, pequenos comércios e indústrias de menor porte, reflete a tendência de expansão demográfica e o aumento do acesso à energia elétrica em regiões mais remotas.
+
+Por outro lado, o mercado livre, embora represente uma fração menor do total, apresenta um crescimento significativamente mais acelerado a partir de 2016. O número de consumidores livres aumentou de menos de 10 mil para mais de 50 mil no período analisado. Esse comportamento pode ser explicado pela maior adesão de grandes consumidores industriais e comerciais ao mercado livre, motivados por incentivos regulatórios e pela busca por maior competitividade em tarifas e contratos personalizados de fornecimento.
+
+```{r grafico classe, fig.height=8, fig.width=10}
+### Consumo por Classe ####
+
+consumo %>%
+  dplyr::summarise(Consumidores = sum(Consumidores),
+                   .by = c(DataExcel, TipoConsumidor)) %>%
+  ggplot() +
+  geom_line(aes(x = DataExcel,
+                y = Consumidores,
+                color = TipoConsumidor,),
+            linewidth = 1.45) +
+  labs(
+    title = "",
+       subtitle = "",
+       x = '',
+       y = ''
+    ) +
+  scale_x_datetime(date_breaks = '2 year',
+                   date_labels = '%y') +
+  scale_y_continuous(labels = scales::number_format(suffix = ' mi',
+                                                    scale = 1/1e6)) +
+  facet_wrap(~TipoConsumidor, scales = 'free', ncol = 1) +
+  theme_minimal() +
+  theme(text = element_text(size = 18),
+        legend.position = 'top',
+        legend.text = element_text(size=16)) +
+  guides(color = "none")
+
+```
+
+Enquanto o mercado cativo reflete tendências amplas e homogêneas de crescimento, o mercado livre destaca a dinâmica de flexibilização e competitividade no setor energético, mostrando-se como uma alternativa atraente para consumidores de maior porte. Esses dados podem ser utilizados para prever padrões futuros de consumo e auxiliar na formulação de políticas públicas e estratégias empresariais para atender às demandas crescentes de ambos os mercados.

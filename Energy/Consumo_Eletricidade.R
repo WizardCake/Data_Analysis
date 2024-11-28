@@ -177,3 +177,12 @@ geracao_total <- geracao %>%
 
 (geracao_total / geracao_prop)
 
+
+#### Consumidores ####
+
+consumidores <- consumo %>% 
+  dplyr::mutate(DataExcel = as.Date(DataExcel)) %>% 
+  dplyr::select(-Consumo, -Data)
+
+
+
